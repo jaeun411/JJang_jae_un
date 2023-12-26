@@ -67,6 +67,8 @@ const LoginForm = () => {
             <span className="slider"></span>
           </label>
           <label htmlFor='remember-id' className='check-label'>아이디 저장</label>
+          <a href="" className="ID_find">| 아이디 찾기</a>
+          <a href="" className="PW_find">| 비밀번호 찾기</a>
         </div>
 
         <button className="btn btn--form btn-login" value="Login">
