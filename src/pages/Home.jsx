@@ -18,7 +18,7 @@ const Home = () => {
                             <h3><span style={{color: 'blue'}}>{userInfo.userId}</span> 님 환영합니다.</h3>
                             <hr/>
                             <FileForm/>
-                            <button>전환</button>
+                            <button>전999환</button>
                         </>
                     }
                 </div>
