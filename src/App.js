@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 import LoginContextProvider from './contexts/LoginContextProvider';
 import About from './pages/About';
@@ -9,6 +10,7 @@ import Join from './pages/Join';
 import Login from './pages/Login';
 import User from './pages/User';
 import Admin from './pages/Admin';
+import File from './pages/File';
 
 const App = () => {
   return (
@@ -21,6 +23,7 @@ const App = () => {
           <Route path="/user" element={<User />} />
           <Route path="/about" element={<About />} />
           <Route path="/admin" element={<Admin />} />
+          <Route path="/FileUpload" element={<File />}/>
         </Routes>
       </LoginContextProvider>
     </BrowserRouter>

@@ -1,7 +1,7 @@
-import React, { useContext } from 'react';
-import { Link } from 'react-router-dom'
+import React, {useContext} from 'react';
+import {Link} from 'react-router-dom'
 import './Header.css'
-import { LoginContext } from '../../contexts/LoginContextProvider';
+import {LoginContext} from '../../contexts/LoginContextProvider';
 
 const Header = () => {
 
@@ -16,9 +16,9 @@ const Header = () => {
               </Link>
           </div>
           <div className="util">
-              <ul>
+              <ul className="menu-list">
                 {/* 로그인 여부에 따라 조건부 랜더링 */}
-                { !isLogin ? 
+                { !isLogin ?
                   <>
                     <Link to="/"><li className="font">로그인</li></Link>
                     <Link to="/join"><li className="font">회원가입</li></Link>

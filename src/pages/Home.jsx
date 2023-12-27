@@ -3,6 +3,8 @@ import Header from '../components/Header/Header';
 import { LoginContext } from '../contexts/LoginContextProvider';
 import FileForm from "../components/FileUpload/FileForm";
 import SideBar from "../components/SideBar/SideBar";
+import { Canvas } from '@react-three/fiber';
+import Box3D from '../components/ThreeJs/Box3D'
 
 const Home = () => {
 
@@ -13,17 +15,16 @@ const Home = () => {
             <Header />
             <div>
                 <div className='container'>
+                    <SideBar/>
                     { isLogin &&
                         <>
-                            <h3><span style={{color: 'blue'}}>{userInfo.userId}</span> 님 환영합니다.</h3>
-                            <hr/>
-                            <FileForm/>
-                            <button>전999환</button>
+                            <Canvas>
+                                <Box3D/>
+                            </Canvas>
                         </>
                     }
                 </div>
             </div>
-
         </>
     )
 }
