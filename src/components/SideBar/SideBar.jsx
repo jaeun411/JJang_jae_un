@@ -37,7 +37,12 @@ function SideBar() {
                                 <>
                                     <Offcanvas.Header closeButton>
                                         <Offcanvas.Title id="offcanvasNavbarLabel-expand-lg">
-                                            <Link to="/"><li className="font">로그인이 필요합니다.</li></Link>
+                                            <div>
+                                                <Link to="/">
+                                                    <li className="font" style={{display: 'inline'}}>로그인</li>
+                                                </Link>
+                                                이 필요합니다.
+                                            </div>
                                         </Offcanvas.Title>
                                     </Offcanvas.Header>
                                     <Offcanvas.Body>
