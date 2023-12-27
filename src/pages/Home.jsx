@@ -3,29 +3,25 @@ import Header from '../components/Header/Header';
 import { LoginContext } from '../contexts/LoginContextProvider';
 import FileForm from "../components/FileUpload/FileForm";
 import SideBar from "../components/SideBar/SideBar";
-
+import SideBarForm from "../components/SideBar/SideBar";
+import './Home.css';
 const Home = () => {
 
-    const { isLogin, logout, userInfo } = useContext(LoginContext);
+    const { isLogin, userInfo } = useContext(LoginContext);
 
     return (
         <>
-            <Header />
-            <div>
-                <div className='container'>
-                    { isLogin &&
-                        <>
-                            <h3><span style={{color: 'blue'}}>{userInfo.userId}</span> 님 환영합니다.</h3>
-                            <hr/>
-                            <FileForm/>
-                            <button>전999환</button>
-                        </>
-                    }
-                </div>
+            <Header/>
+            <div className='container'>
+                <SideBarForm status={isLogin}/>
+                <hr/>
             </div>
-
+            <div className='container2'>
+                <FileForm/>
+                <button>전환</button>
+            </div>
         </>
-    )
+    );
 }
 
 export default Home

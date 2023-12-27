@@ -87,6 +87,11 @@
   margin-bottom: 0 !important;
 }
 
+.check-label2 {
+  cursor: pointer;
+  margin-bottom: 0 !important;
+}
+
 /* 토글 버튼 스타일 */
 .toggle-btn {
   position: relative;
