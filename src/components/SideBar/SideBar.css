@@ -2,3 +2,13 @@
     position: fixed;
     left: 0;
 }
+
+.logout_link{
+    border: none;
+    margin-bottom: 20px;
+    margin-left: 250px;
+}
+
+.dropdown-menu.show {
+    border-color: white;
+}
