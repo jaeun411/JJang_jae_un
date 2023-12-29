@@ -1,0 +1,13 @@
+.container {
+    position: absolute; /* 절대 위치 */
+    left: -63%; /* 왼쪽 끝에서부터의 위치 */
+    top: 10%; /* 상위 요소 대비 상단에서 50%의 위치, 필요에 따라 조절 가능 */
+    transform: translateY(-50%); /* 요소의 중앙을 정확히 위치시키기 위해 */
+}
+
+.container2 {
+    position: absolute; /* 절대 위치 */
+    left: 18%; /* 왼쪽 끝에서부터의 위치 */
+    top: 46%; /* 상위 요소 대비 상단에서 50%의 위치, 필요에 따라 조절 가능 */
+    transform: translateY(-50%); /* 요소의 중앙을 정확히 위치시키기 위해 */
+}

@@ -14,6 +14,13 @@ a { text-decoration: none; color: black; }
 button { cursor: pointer; }
 .link { background-color: transparent; color: black; border: none; font-size: var(--font-size-main); }
 
+.custom-sidebar {
+  transform: translateX(-100%); /* 오른쪽에서 왼쪽으로 이동 */
+}
+
+.custom-navbar-toggle {
+  text-align: left !important;
+}
 
 :root {
   --font-size-main : 20px;

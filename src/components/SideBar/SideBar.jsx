@@ -10,6 +10,7 @@ import { LoginContext } from "../../contexts/LoginContextProvider";
 import { Link, useNavigate } from "react-router-dom";
 import * as Swal from "../../apis/alert";
 import './SideBar.css';
+import ScrollspyMenu from "./ListGroup";
 
 function SideBar() {
     const { isLogin, logout, userInfo } = useContext(LoginContext);
@@ -21,19 +22,32 @@ function SideBar() {
         });
     };
 
+    const buttonStyle = {
+        backgroundColor: 'skyblue',
+        color: 'white',
+        fontSize: '20px',
+    };
+
+    const buttonStyle2 = {
+        backgroundColor: 'white',
+        color: 'grey',
+        fontSize: '20px',
+    };
+
     return (
         <>
             {[false].map((expand) => (
                 <Navbar key={expand} expand={expand} className="bg-white">
                     <Container fluid>
                         <Navbar.Brand href="#"></Navbar.Brand>
-                        <Navbar.Toggle aria-controls="offcanvasNavbar-expand-lg" placement="end" style={{ marginRight: 'auto' }} />
+                        <Navbar.Toggle aria-controls="offcanvasNavbar-expand-lg" placement="end"
+                                       style={{marginRight: 'auto'}}/>
                         <Navbar.Offcanvas
                             id="offcanvasNavbar-expand-lg"
                             aria-labelledby="offcanvasNavbarLabel-expand-lg"
                             placement="start"
                         >
-                            { !isLogin ?
+                            {!isLogin ?
                                 <>
                                     <Offcanvas.Header closeButton>
                                         <Offcanvas.Title id="offcanvasNavbarLabel-expand-lg">
@@ -47,7 +61,7 @@ function SideBar() {
                                     </Offcanvas.Header>
                                     <Offcanvas.Body>
                                         <Nav className="flex-grow-1 pe-3">
-                                            <Button onClick={handleClick}>
+                                            <Button style={buttonStyle} onClick={handleClick}>
                                                 파일 추가하기
                                             </Button>
                                             <NavDropdown
@@ -65,27 +79,25 @@ function SideBar() {
                                 <>
                                     <Offcanvas.Header closeButton>
                                         <Offcanvas.Title id="offcanvasNavbarLabel-expand-lg">
-                                            <span style={{color: 'blue'}}>{userInfo.userId}</span> 님 환영합니다.
+                                            <span style={{color: 'skyblue'}}>{userInfo.userId}</span>님 환영합니다.
                                         </Offcanvas.Title>
                                     </Offcanvas.Header>
                                     <hr/>
                                     <Offcanvas.Body>
                                         <Nav className="flex-grow-1 pe-3">
-                                            <Button as={Link} to="/FileUpload">
+                                            <Button as={Link} to="/FileUpload" style={buttonStyle}>
                                                 파일 추가하기
                                             </Button>
-                                            <Nav.Link href="/">Home</Nav.Link>
+                                            <Nav.Link href="/home">Home</Nav.Link>
                                             <NavDropdown
-                                                title="3D 목록"
+                                                title="목록"
                                                 id="offcanvasNavbarDropdown-expand-lg"
                                             >
-                                                <NavDropdown.Item href="#action3">리스트 쭈루룩</NavDropdown.Item>
+                                                <ScrollspyMenu/>
                                             </NavDropdown>
-                                            <button className='link' onClick={() => logout()}>
-                                                <li className="font">로그아웃</li>
-                                            </button>
                                         </Nav>
                                     </Offcanvas.Body>
+                                    <button  className='logout_link' onClick={() => logout()} style={buttonStyle2}>로그아웃</button>
                                 </>
                             }
                         </Navbar.Offcanvas>

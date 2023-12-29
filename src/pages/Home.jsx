@@ -6,16 +6,15 @@ import {Canvas} from '@react-three/fiber';
 import Box3D from '../components/ThreeJs/Box3D'
 
 const Home = () => {
-
     const { isLogin, logout, userInfo } = useContext(LoginContext);
 
     return (
         <>
-            <Header />
+            <Header/>
             <div>
                 <div className='container'>
                     <SideBar/>
-                    { isLogin &&
+                    {isLogin &&
                         <>
                             <Canvas>
                                 <Box3D/>
@@ -25,7 +24,7 @@ const Home = () => {
                 </div>
             </div>
         </>
-    )
+    );
 }
 
 export default Home

@@ -25,7 +25,7 @@ function IdForm() {
                     <LoginForm>
                         <LoginForm.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
                             <LoginForm.Label>Name</LoginForm.Label>
-                            <LoginForm.Control as="textarea" rows={1} />
+                            <LoginForm.Control rows={1} />
                         </LoginForm.Group>
 
                         <LoginForm.Group className="mb-3" controlId="exampleForm.ControlInput1">
