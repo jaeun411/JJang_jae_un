@@ -29,5 +29,23 @@ export const confirm = (title, text, icon, callback) => {
         confirmButtonColor: "#3085d6",
         confirmButtonText: "Yes",
     })
-    .then( callback )
+        .then((result) => {
+            if (result.isConfirmed) {
+                callback();
+            }
+        });
+}
+
+export const confirms = (title, text, icon, callback) => {
+    MySwal.fire({
+        title: title,
+        text: text,
+        icon: icon,
+        showCancelButton: true,
+        cancelButtonColor: "#d33",
+        cancelButtonText: "No",
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "Yes",
+    })
+        .then( callback )
 }

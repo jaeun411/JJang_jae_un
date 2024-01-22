@@ -1,9 +1,10 @@
+// Home.jsx
 import React, {useContext} from 'react';
 import Header from '../components/Header/Header';
 import {LoginContext} from '../contexts/LoginContextProvider';
 import SideBar from "../components/SideBar/SideBar";
-import {Canvas} from '@react-three/fiber';
-import Box3D from '../components/ThreeJs/Box3D'
+import UploadDownloadComponent from "../components/ThreeJs/UploadDownloadComponent";
+import QR from "qrcode.react";
 
 const Home = () => {
 
@@ -11,18 +12,10 @@ const Home = () => {
 
     return (
         <>
-            <Header />
-            <div>
-                <div className='container'>
-                    <SideBar/>
-                    { isLogin &&
-                        <>
-                            <Canvas>
-                                <Box3D/>
-                            </Canvas>
-                        </>
-                    }
-                </div>
+            <Header/>
+            <SideBar/>
+            <div className='container'>
+                <UploadDownloadComponent />
             </div>
         </>
     )

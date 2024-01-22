@@ -2,3 +2,13 @@
     position: fixed;
     left: 0;
 }
+
+.logout_link{
+    border: none;
+    margin-bottom: 20px;
+    margin-left: 250px;
+}
+
+.react-modal-overlay {
+    z-index: 1050; /* Offcanvas의 z-index보다 높은 값 */
+}

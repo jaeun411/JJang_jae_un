@@ -1,6 +1,9 @@
 import React, { useContext } from 'react';
 import './JoinForm.css';
 import { LoginContext } from '../../contexts/LoginContextProvider';
+import { FaUser, FaLock } from "react-icons/fa";
+import { MdOutlineEmail } from "react-icons/md";
+import { LuUserSquare } from "react-icons/lu";
 
 const JoinForm = ({ join }) => {
   const { login } = useContext(LoginContext);
@@ -14,64 +17,63 @@ const JoinForm = ({ join }) => {
 
     console.log(userId, userPw, name, email);
 
-    join( { userId, userPw, name, email } );
+    join(userId, userPw, name, email);
   };
 
   return (
-    <div className="form">
-      <h2 className="login-title">Join</h2>
-
-      <form className="login-form" onSubmit={(e) => onJoin(e)}>
-        <div>
-          <label htmlFor="username">Username</label>
-          <input
-            id="username"
-            type="text"
-            placeholder="Username"
-            name="username"
-            autoComplete="username"
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="password">Password</label>
-          <input
-            id="password"
-            type="password"
-            placeholder="Password"
-            name="password"
-            autoComplete="current-password"
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="name">Name</label>
-          <input
-            id="name"
-            type="text"
-            placeholder="Name"
-            name="name"
-            autoComplete="name"
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="email">Email</label>
-          <input
-            id="email"
-            type="email"
-            placeholder="Email"
-            name="email"
-            autoComplete="email"
-            required
-          />
-        </div>
-
-        <button className="btn btn--form btn-login" type="submit">
-          Join
-        </button>
-      </form>
-    </div>
+      <div className="wrapper">
+        <h1 className="login-title">회원가입</h1>
+        <form action=" " onSubmit={(e) => onJoin(e)}>
+          <div className="input-box">
+            <input
+                id="username"
+                type="text"
+                placeholder="Userid"
+                name="username"
+                autoComplete="new-username"
+                required
+            />
+              <FaUser className='icon'/>
+          </div>
+          <div className="input-box">
+            <input
+                id="password"
+                type="password"
+                placeholder="Password"
+                name="password"
+                autoComplete="new-password"
+                required
+            />
+              <FaLock className='icon'/>
+          </div>
+          <div className="input-box">
+            <input
+                id="name"
+                type="text"
+                placeholder="Name"
+                name="name"
+                autoComplete="name"
+                required
+            />
+              <LuUserSquare className='icon'/>
+          </div>
+          <div className="input-box">
+            <input
+                id="email"
+                type="email"
+                placeholder="Email"
+                name="email"
+                autoComplete="email"
+                required
+            />
+              <MdOutlineEmail className='icon'/>
+          </div>
+          <br/>
+          <button type="submit">
+            Join
+          </button>
+        </form>
+      </div>
   );
 };
 

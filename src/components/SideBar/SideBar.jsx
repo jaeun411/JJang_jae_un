@@ -1,25 +1,77 @@
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
-import Form from 'react-bootstrap/Form';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Offcanvas from 'react-bootstrap/Offcanvas';
-import React, { useContext } from "react";
-import { LoginContext } from "../../contexts/LoginContextProvider";
-import { Link, useNavigate } from "react-router-dom";
+import React, {useContext, useEffect, useState} from "react";
+import {LoginContext} from "../../contexts/LoginContextProvider";
+import {Link, useNavigate} from "react-router-dom";
 import * as Swal from "../../apis/alert";
 import './SideBar.css';
+import UploadModal from "../UploadModal/UploadModal";
+import * as auth from "../../apis/auth";
+import axios from "axios";
 
 function SideBar() {
     const { isLogin, logout, userInfo } = useContext(LoginContext);
     const navigate = useNavigate();
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [buildings, setBuildings] = useState([]);
+    const [floors, setFloors] = useState([]);
 
     const handleClick = () => {
         Swal.alert("로그인이 필요합니다", "로그인 화면으로 이동합니다.", "warning", () => {
             navigate("/");
         });
     };
+
+    const buttonStyle = {
+        backgroundColor: 'skyblue',
+        color: 'white',
+        fontSize: '20px',
+    };
+
+    const buttonStyle2 = {
+        backgroundColor: 'white',
+        color: 'grey',
+        fontSize: '20px',
+    };
+
+    const openModal = () => {
+        if (!modalIsOpen) {
+            setModalIsOpen(true);
+        }
+    };
+
+    const closeModal = () => {
+        setModalIsOpen(false);
+    };
+
+    // 건물 이름 가져오기
+    useEffect(() => {
+        if (isLogin) {
+            auth.list()
+                .then(response => {
+                    console.log(response.data); // Add this line
+                    setBuildings(response.data);
+                })
+                .catch(error => {
+                    console.error('There was an error!', error);
+                });
+        }
+    }, [isLogin]);
+
+    const fetchFloors = (buildingId) => {
+        axios.get(`/file/${buildingId}/list`)
+            .then(response => {
+                setFloors(response.data);
+            })
+            .catch(error => {
+                console.error('There was an error!', error);
+            });
+    };
+
 
     return (
         <>
@@ -71,21 +123,32 @@ function SideBar() {
                                     <hr/>
                                     <Offcanvas.Body>
                                         <Nav className="flex-grow-1 pe-3">
-                                            <Button as={Link} to="/FileUpload">
-                                                파일 추가하기
-                                            </Button>
-                                            <Nav.Link href="/">Home</Nav.Link>
-                                            <NavDropdown
-                                                title="3D 목록"
-                                                id="offcanvasNavbarDropdown-expand-lg"
-                                            >
-                                                <NavDropdown.Item href="#action3">리스트 쭈루룩</NavDropdown.Item>
-                                            </NavDropdown>
-                                            <button className='link' onClick={() => logout()}>
-                                                <li className="font">로그아웃</li>
-                                            </button>
+                                            <div>
+                                                <Button style={buttonStyle} onClick={openModal}>
+                                                    파일 추가하기
+                                                </Button>
+                                                <UploadModal isOpen={modalIsOpen} closeModal={closeModal}/>
+                                            </div>
+                                            {buildings.map((building, index) =>
+                                                <NavDropdown
+                                                    key={index}
+                                                    title={building.buildingName}
+                                                    id={`offcanvasNavbarDropdown-${building.buildingId}`}
+                                                    onClick={() => fetchFloors(building.buildingId)}
+                                                >
+                                                    {floors.map((floor, index) =>
+                                                        <NavDropdown.Item
+                                                            key={index}
+                                                        >
+                                                            {`${floor.floorNum}층 (${floor.updateDate})`}
+                                                        </NavDropdown.Item>
+                                                    )}
+                                                </NavDropdown>
+                                            )}
                                         </Nav>
                                     </Offcanvas.Body>
+                                    <button className='logout_link' onClick={() => logout()} style={buttonStyle2}>로그아웃
+                                    </button>
                                 </>
                             }
                         </Navbar.Offcanvas>

@@ -8,6 +8,10 @@
 body {
   /* font-family: 'Noto Sans', 'Noto Sans KR', sans-serif; */
   font-size: var(--font-size-main);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: url("./components/Assets/background.jpg") no-repeat center;
+  background-size: 100%;
 }
 ul { list-style-type: none; }
 a { text-decoration: none; color: black; }

@@ -11,11 +11,13 @@ import Login from './pages/Login';
 import User from './pages/User';
 import Admin from './pages/Admin';
 import File from './pages/File';
+import SnowEffect from './SnowEffect'; // SnowEffect 컴포넌트를 import 합니다.
 
 const App = () => {
   return (
     <BrowserRouter>
       <LoginContextProvider>
+        <SnowEffect /> {/* 모든 페이지에 눈내리는 효과를 추가합니다. */}
         <Routes>
           <Route path="/home" element={<Home />} />
           <Route path="/" element={<Login />} />

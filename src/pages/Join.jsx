@@ -12,44 +12,39 @@ const Join = () => {
   const navigate = useNavigate()
 
   // 회원가입 요청
-  const join = async ( form ) => {
-    console.log(form);
-    
-    let response
-    let data
+  const join = async (  userId, userPw, name, email ) => {
+    console.log( userId, userPw, name, email);
+
     try {
-      response = await auth.join(form)
+      const {statusCode, responseData} = await auth.join( userId, userPw, name, email)
+
+      console.log(`data : ${responseData}`);
+      console.log(`status : ${statusCode}`);
+
+      if( statusCode === 200 ) {
+        console.log(`회원가입 성공!`);
+        Swal.alert("회원가입 성공", "메인 화면으로 이동합니다.", "success", () => { navigate("/") })
+      }
+      else {
+        console.log(`회원가입 실패!`);
+        Swal.alert("회원가입 실패", "회원가입에 실패하였습니다.", "error" )
+      }
+
     } catch (error) {
       console.error(`${error}`)
       console.error(`회원가입 요청 중 에러가 발생하였습니다.`);
       return
     }
-
-    data = response.data
-    const status = response.status
-    console.log(`data : ${data}`);
-    console.log(`status : ${status}`);
-
-    if( status === 200 ) {
-      console.log(`회원가입 성공!`);
-      Swal.alert("회원가입 성공", "메인 화면으로 이동합니다.", "success", () => { navigate("/") })
-    }
-    else { 
-      console.log(`회원가입 실패!`);
-      Swal.alert("회원가입 실패", "회원가입에 실패하였습니다.", "error" )
-    }
-
-
   }
 
 
   return (
-    <>
+      <>
         <Header />
         <div className='container'>
-            <JoinForm join={join} />
+          <JoinForm join={join} />
         </div>
-    </>
+      </>
   )
 }
 

@@ -1,7 +1,9 @@
-.container {
+.container{
   width: 1024px;
-  margin: 1px auto;
+  margin: auto;
 }
 
 
-hr { margin-bottom: 50px; }
+hr {
+  margin-bottom: 50px;
+}
