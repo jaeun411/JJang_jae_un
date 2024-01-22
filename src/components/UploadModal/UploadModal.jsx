@@ -97,7 +97,7 @@ const UploadModal = ({ isOpen, closeModal }) => {
                      // 추출한 user_id를 formData에 추가합니다.
                      formData.append('user_id', user_id);
 
-                     return axios.post('http://10.101.64.46:8000/model', formData, {
+                     return axios.post('http://10.101.69.52:8000/model', formData, {
                          headers: {
                              'Content-Type': 'multipart/form-data'
                          }
