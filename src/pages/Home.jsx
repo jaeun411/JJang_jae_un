@@ -1,21 +1,21 @@
 // Home.jsx
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import Header from '../components/Header/Header';
-import {LoginContext} from '../contexts/LoginContextProvider';
 import SideBar from "../components/SideBar/SideBar";
-import UploadDownloadComponent from "../components/ThreeJs/UploadDownloadComponent";
 import QR from "qrcode.react";
+import ThreeJs from "../components/ThreeJs/ThreeJs";
 
 const Home = () => {
-
-    const { isLogin, logout, userInfo } = useContext(LoginContext);
+    const [gltfBlobUrl, setGltfBlobUrl] = useState(null);
+    const [buildingId, setBuildingId] = useState(null);
+    const [floorNum, setFloorNum] = useState(null);
 
     return (
         <>
             <Header/>
-            <SideBar/>
+            <SideBar setGltfBlobUrl={setGltfBlobUrl} setBuildingId={setBuildingId} setFloorNum={setFloorNum}/>
             <div className='container'>
-                <UploadDownloadComponent />
+                <ThreeJs gltfBlobUrl={gltfBlobUrl} buildingId={buildingId} floorNum={floorNum}/>
             </div>
         </>
     )

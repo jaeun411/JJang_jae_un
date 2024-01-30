@@ -7,6 +7,10 @@ header {
     margin-bottom: 20px;
 }
 
+.ico-container {
+    align-items: flex-start;
+}
+
 .menu-list {
     list-style: none;  /* 리스트 스타일 제거 */
     padding: 0;        /* 내부 간격 제거 */

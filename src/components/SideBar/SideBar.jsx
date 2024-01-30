@@ -12,13 +12,15 @@ import './SideBar.css';
 import UploadModal from "../UploadModal/UploadModal";
 import * as auth from "../../apis/auth";
 import axios from "axios";
+import { IoMdRefresh } from "react-icons/io";
 
-function SideBar() {
+function SideBar({ setGltfBlobUrl,setBuildingId,setFloorNum }) {
     const { isLogin, logout, userInfo } = useContext(LoginContext);
     const navigate = useNavigate();
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [buildings, setBuildings] = useState([]);
     const [floors, setFloors] = useState([]);
+    const [modelUrl, setModelUrl] = useState(null);
 
     const handleClick = () => {
         Swal.alert("로그인이 필요합니다", "로그인 화면으로 이동합니다.", "warning", () => {
@@ -48,6 +50,18 @@ function SideBar() {
         setModalIsOpen(false);
     };
 
+    const fetchBuildings = () => {
+        if (isLogin) {
+            auth.list()
+                .then(response => {
+                    setBuildings(response.data);
+                })
+                .catch(error => {
+                    console.error('There was an error!', error);
+                });
+        }
+    };
+
     // 건물 이름 가져오기
     useEffect(() => {
         if (isLogin) {
@@ -72,6 +86,38 @@ function SideBar() {
             });
     };
 
+    const fetchBuilding = (buildingId) => {
+        const url = `/file/${buildingId}`;
+        axios.get(url, { responseType: 'blob' }) // Blob 형태로 받아옵니다.
+            .then(response => {
+                const blob = response.data;
+                const blobUrl = URL.createObjectURL(blob); // Blob URL을 생성합니다.
+                setGltfBlobUrl(blobUrl); // Blob URL을 상태로 저장합니다.
+            })
+            .catch(error => {
+                console.error('There was an error!', error);
+            });
+    };
+
+    const handlesClick = (buildingId) => {
+        fetchFloors(buildingId);
+        fetchBuilding(buildingId);
+    };
+
+    const fetchModel = (buildingId, floorNum) => {
+        const url = `/file/${buildingId}/${floorNum}`;
+        axios.get(url, { responseType: 'blob' }) // Blob 형태로 받아옵니다.
+            .then(response => {
+                const blob = response.data;
+                const blobUrl = URL.createObjectURL(blob); // Blob URL을 생성합니다.
+                setGltfBlobUrl(blobUrl); // Blob URL을 상태로 저장합니다.
+                setBuildingId(buildingId);
+                setFloorNum(floorNum);
+            })
+            .catch(error => {
+                console.error('There was an error!', error);
+            });
+    };
 
     return (
         <>
@@ -119,6 +165,7 @@ function SideBar() {
                                         <Offcanvas.Title id="offcanvasNavbarLabel-expand-lg">
                                             <span style={{color: 'blue'}}>{userInfo.userId}</span> 님 환영합니다.
                                         </Offcanvas.Title>
+                                        <Button onClick={fetchBuildings}><IoMdRefresh /></Button>
                                     </Offcanvas.Header>
                                     <hr/>
                                     <Offcanvas.Body>
@@ -134,13 +181,19 @@ function SideBar() {
                                                     key={index}
                                                     title={building.buildingName}
                                                     id={`offcanvasNavbarDropdown-${building.buildingId}`}
-                                                    onClick={() => fetchFloors(building.buildingId)}
+                                                    onClick={() => handlesClick(building.buildingId)}
                                                 >
                                                     {floors.map((floor, index) =>
                                                         <NavDropdown.Item
                                                             key={index}
+                                                            style={{ textAlign: 'center' }}
+                                                            onClick={() => {
+                                                                fetchModel(building.buildingId, floor.floorNum);
+                                                                setBuildingId(building.buildingId);
+                                                                setFloorNum(floor.floorNum);
+                                                            }}
                                                         >
-                                                            {`${floor.floorNum}층 (${floor.updateDate})`}
+                                                            {`${floor.floorNum}층 - 수정 날짜 : (${new Date(floor.updateDate).toISOString().slice(0,10)})`}
                                                         </NavDropdown.Item>
                                                     )}
                                                 </NavDropdown>
