@@ -9,13 +9,14 @@ const Home = () => {
     const [gltfBlobUrl, setGltfBlobUrl] = useState(null);
     const [buildingId, setBuildingId] = useState(null);
     const [floorNum, setFloorNum] = useState(null);
+    const [jsonData, setJsonData] = useState({});
 
     return (
         <>
             <Header/>
-            <SideBar setGltfBlobUrl={setGltfBlobUrl} setBuildingId={setBuildingId} setFloorNum={setFloorNum}/>
+            <SideBar setGltfBlobUrl={setGltfBlobUrl} setBuildingId={setBuildingId} setFloorNum={setFloorNum} setJsonData={setJsonData}/>
             <div className='container'>
-                <ThreeJs gltfBlobUrl={gltfBlobUrl} buildingId={buildingId} floorNum={floorNum}/>
+                <ThreeJs gltfBlobUrl={gltfBlobUrl} buildingId={buildingId} floorNum={floorNum} jsonData={jsonData}/>
             </div>
         </>
     )

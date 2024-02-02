@@ -97,6 +97,18 @@ export const pw = (userName,userId ,email)=> {return api.get('/users/pw',
     })
 };
 
+export const delFloor = (buildingId, floorNum) => {console.log("매개변수:",buildingId,floorNum);
+    const url = `/file/${buildingId}/${floorNum}`;
+    return api.delete(url)
+};
+
+
+export const delBuild = (buildingId) => {console.log("매개변수:",buildingId);
+    const url = `/file/${buildingId}`;
+    console.log(url);
+    return api.delete(url)
+};
+
 
 // 회원정보 수정
 export const update = (data) => api.put("/users", data)
