@@ -1,28 +1,70 @@
-import React, {useState, useEffect, useRef, useCallback/*, useMemo*/} from 'react';
-import axios from 'axios';
-import { Canvas, useThree } from '@react-three/fiber';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
-import { OrbitControls, Text } from "@react-three/drei";
+import React, {useEffect, useRef, useState} from 'react';
+import {Canvas, useThree} from '@react-three/fiber';
+import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader';
+import {OrbitControls, Text} from "@react-three/drei";
 import * as THREE from 'three';
-import "./UploadDownloadComponent.css";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes, faCheck } from '@fortawesome/free-solid-svg-icons';
-import * as Swal from "../../apis/alert";
+import "./ThreeJs.css";
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faCheck, faTimes} from '@fortawesome/free-solid-svg-icons';
+import { GLTFExporter } from 'three/examples/jsm/exporters/GLTFExporter';
+import axios from "axios";
+import txt from './text.json'
 
+//-------------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------------------
+//glb파일 로드/ 오브젝트 관리
 const Model = ({ url,onObjectClick }) => {
-    const [gltf, setGltf] = useState();
+    const [gltf, setGltf] = useState(null);
     const meshRef = useRef();
     const { camera } = useThree();
 
+    //랜더링 될 때 가져온 glb 파일을 로드한다
     useEffect(() => {
         // GLTF 모델을 로드하고 meshRef에 저장합니다.
         const loader = new GLTFLoader();
         loader.load(url, (gltf) => {
             setGltf(gltf.scene);
-            meshRef.current = gltf.scene; // meshRef에 직접 할당
+            
+            // scene을 순회하면서 오브젝트의 이름을 출력
+            gltf.scene.traverse((child) => {
+                if (child instanceof THREE.Mesh) {
+                  console.log('Object Name:', child.name);
+                }
+              });
+            
         });
     }, [url]);
 
+    //오브젝트 정보와 라벨 정보를 넘겨서 띄워준다
+    const updateLabel = (name, object) => {
+        // 클릭된 오브젝트의 경계 상자를 계산합니다.
+        const box = new THREE.Box3().setFromObject(object);
+        const center = new THREE.Vector3();
+        box.getCenter(center); // 경계 상자의 중심 좌표를 구합니다.
+
+        // 경계 상자의 크기를 기반으로 적절한 텍스트 크기를 계산합니다.
+        const size = box.getSize(new THREE.Vector3());
+        const maxSize = Math.max(size.x, size.y, size.z);
+        const fontSize = maxSize * 0.1; // 예를 들어, 최대 크기의 10%로 설정합니다.
+
+        // 경계 상자의 최상단에 텍스트를 띄우기 위해 y 좌표를 조정합니다.
+        // size.y의 절반을 중심 좌표에 더해 최상단 좌표를 구합니다.
+        center.y += size.y / 1.5;
+
+        // 텍스트 레이블 위치와 크기를 오브젝트 중심에 설정합니다.
+        setLabels({
+            ...labels,
+            [object.uuid]: {
+                text: name,
+                position: center.toArray(),
+                fontSize,
+                rotation: [Math.PI / 2, Math.PI, 0] // X축과 Y축을 중심으로 회전
+            }
+        });
+    };
+
+
+    //오브젝트 클릭이랑 카메라 움직임 담당
     useEffect(() => {
         if (!meshRef.current) {
             return; // meshRef.current가 없다면 아무것도 하지 않습니다.
@@ -48,27 +90,30 @@ const Model = ({ url,onObjectClick }) => {
         return () => {
             primitive.removeEventListener('click', handleClick);
         };
-    }, [onObjectClick, camera, meshRef]);;
+    }, [onObjectClick, camera, meshRef]);
+
 
     // meshRef를 primitive에 붙여서 참조를 갖도록 합니다.
     return gltf ? (
-        <primitive
+        <group
             ref={meshRef}
-            object={gltf}
-            scale={0.01}
             onClick={(event) => {
-                // React의 이벤트 핸들러를 통해 클릭 이벤트를 처리합니다.
-                // 이벤트 버블링을 방지합니다.
                 event.stopPropagation();
                 onObjectClick(event.object);
             }}
-        />
+        >
+            <primitive object={gltf} scale={0.01}/>
+        </group>
     ) : null;
 };
 
-const ObjectDetailsForm = ({ objectDetails, setObjectDetails, onSubmit, onCancel }) => {
+
+//-------------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------------------
+//오브젝트 클릭시 나오는 모달 관련
+const ObjectDetailsForm = ({objectDetails, setObjectDetails, onSubmit, onCancel, onSaveToServer}) => {
     const addMetadataField = () => {
-        const newMetadata = [...objectDetails.metadata, { key: '', value: '' }];
+        const newMetadata = [...objectDetails.metadata, {key: '', value: ''}];
         setObjectDetails({ ...objectDetails, metadata: newMetadata });
     };
 
@@ -126,27 +171,52 @@ const ObjectDetailsForm = ({ objectDetails, setObjectDetails, onSubmit, onCancel
                         취소
                         <FontAwesomeIcon icon={faTimes}/>
                     </button>
+                    {onSaveToServer && (
+                        <button className="btn btn-primary btn-save-to-server" onClick={onSaveToServer}>
+                            Save to Server
+                        </button>
+                    )}
                 </div>
             </div>
         </div>
     );
 };
 
-const UploadDownloadComponent = () => {
+//-------------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------------------
+//object에 라벨 처리
+const ThreeJs = ({ gltfBlobUrl, buildingId, floorNum  }) => {
     const [downloadUrl, setDownloadUrl] = useState('');
-    const [gltfUrl, setGltfUrl] = useState('');
+    //객체와 객체에 해당하는 이름을 담는다
     const [labels, setLabels] = useState({});
+    //이걸로 건물 정보 입력 모달 상태 관리(true 열림, false 닫힘)
     const [showDetailsForm, setShowDetailsForm] = useState(false);
+
+    //메타 데이터 관리
     const [objectDetails, setObjectDetails] = useState({ name: '', metadata: [] });
+    //선택된 오브젝트 관리
     const [selectedObject, setSelectedObject] = useState(null);
 
+    const [gltf, setGltf] = useState(null);
+    const meshRef = useRef();
+
+
+    //클릭된 객체를 처리하는 부분
     const handleObjectClick = (object) => {
         setSelectedObject(object);
         setShowDetailsForm(true);
-        // 오브젝트의 현재 레이블을 가져와서 입력 폼에 기본값으로 설정합니다.
-        setObjectDetails({ name: labels[object.uuid]?.text || object.name || '', metadata: [] });
+
+        // 오브젝트의 메타데이터를 가져와서 입력 폼에 기본값으로 설정합니다.
+        // 만약 메타데이터가 없다면 빈 배열을 사용합니다.
+        const metadata = object.userData?.metadata || [];
+
+        setObjectDetails({
+            name: labels[object.uuid]?.text || object.name || '',
+            metadata
+        });
     };
 
+    //오브젝트 정보와 라벨 정보를 넘겨서 띄워준다
     const updateLabel = (name, object) => {
         // 클릭된 오브젝트의 경계 상자를 계산합니다.
         const box = new THREE.Box3().setFromObject(object);
@@ -174,26 +244,54 @@ const UploadDownloadComponent = () => {
         });
     };
 
+    //상세항목을 담당하는 부분
     const handleSubmitDetails = () => {
-        //서버로 objectDetails를 전송하는 로직 추가 하기.
         if (selectedObject) {
+            selectedObject.userData.metadata = objectDetails.metadata;
+
+            //오브젝트와, 넣을 이름을 넘겨준다
             updateLabel(objectDetails.name, selectedObject);
         }
-        setShowDetailsForm(false);
     };
 
+    const handleSaveToServer = () => {
+        if (!gltf) {
+            // Use GLTFExporter to export the modified GLB file
+            const exporter = new GLTFExporter();
+            exporter.parse(gltf, (glb) => {
+                // Send the GLB data to the server
+                const formData = new FormData();
+                formData.append('updateFile', new Blob([glb], { type: 'model/gltf-binary' }), 'modified_model.glb');
+
+                axios.put(`/file/27/1`, formData)
+                    .then(response => {
+                        // Handle success, e.g., show a success message
+                        console.log('File successfully saved to the server');
+                    })
+                    .catch(error => {
+                        // Handle error, e.g., show an error message
+                        console.error('Error saving file to the server', error);
+                    });
+            }, { binary: false });
+        }
+    };
+
+
+    //상세항목 닫힘
     const handleCancelDetails = () => {
         setShowDetailsForm(false);
     };
-
+    
     return (
         <div style={{marginLeft: "150px"}}>
             <div>
-                <Canvas style={{height: "1000px", width: "1200px", marginLeft: "20px"}}>
+                <Canvas
+                    style={{height: "1000px", width: "1200px", marginLeft: "20px"}}
+                >
                     <OrbitControls/>
-                    <ambientLight intensity={1000}/>
+                    <ambientLight intensity={100.0}/>
                     <pointLight position={[10, 10, 10]} intensity={1000}/>
-                    {gltfUrl && <Model url={gltfUrl} onObjectClick={handleObjectClick}/>}
+                    {gltfBlobUrl && <Model url={gltfBlobUrl} onObjectClick={handleObjectClick}/>}
                     {Object.entries(labels).map(([uuid, label]) => (
                         <Text key={uuid}
                               position={label.position}
@@ -214,11 +312,13 @@ const UploadDownloadComponent = () => {
                     setObjectDetails={setObjectDetails}
                     onSubmit={handleSubmitDetails}
                     onCancel={handleCancelDetails}
+                    onSaveToServer={handleSaveToServer}
                 />
             )}
+
         </div>
     );
 };
 
 
-export default UploadDownloadComponent;
+export default ThreeJs;

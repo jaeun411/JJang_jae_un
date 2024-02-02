@@ -92,12 +92,7 @@ const UploadModal = ({ isOpen, closeModal }) => {
                  withCredentials: true // 이 옵션을 설정하여 세션 쿠키를 요청과 함께 보냄
              })
                  .then( response => {
-                     const user_id = response.data;
-
-                     // 추출한 user_id를 formData에 추가합니다.
-                     formData.append('user_id', user_id);
-
-                     return axios.post('http://10.101.69.52:8000/model', formData, {
+                     return axios.post('/file', formData, {
                          headers: {
                              'Content-Type': 'multipart/form-data'
                          }
