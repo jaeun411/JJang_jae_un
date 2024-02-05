@@ -24,7 +24,7 @@ function SideBar({setGltfBlobUrl, setJsonData, setBuildingId, setFloorNum}) {
 
     const [buildings, setBuildings] = useState([]);
     const [floors, setFloors] = useState([]);
-    
+
     const [offcanvas, setOffcanvas] = useState(false);
 
 
@@ -77,8 +77,8 @@ function SideBar({setGltfBlobUrl, setJsonData, setBuildingId, setFloorNum}) {
                 });
         }
     }, [isLogin]);
-    
-    
+
+
     /**
      * 빌딩 아이디 리스트 받아오기
      */
@@ -176,7 +176,7 @@ function SideBar({setGltfBlobUrl, setJsonData, setBuildingId, setFloorNum}) {
                     setGltfBlobUrl(blobUrl);    // Blob URL을 상태로 저장합니다.
                     setJsonData(jsonData);      // JSON 데이터를 상태로 저장합니다.
                     setBuildingId(buildingId);  // 건물 아이디를 상태로 저장합니다.
-                    setFloorNum(floor);         // 층 정보를 상태로 저장합니다.
+                    setFloorNum(floor.floorNum);         // 층 정보를 상태로 저장합니다.
                 })
                 .catch(error => {
                     console.error('There was an error!', error);
@@ -233,25 +233,24 @@ function SideBar({setGltfBlobUrl, setJsonData, setBuildingId, setFloorNum}) {
                                 </>
                                 :
                                 <>
-                                    <Offcanvas.Header closeButton className='sidebarHeader'>
-                                        <Offcanvas.Title id="offcanvasNavbarLabel-expand-lg">
+                                    <Offcanvas.Header closeButton>
+                                        <Offcanvas.Title id="offcanvasNavbarLabel-expand-lg" style={{fontSize : '23px'}}>
                                             <span style={{color: 'blue'}}>
                                                 <IoPersonSharp/> {userInfo.userId}
                                             </span>님 환영합니다
                                         </Offcanvas.Title>
-                                        <button className='refresh' onClick={fetchBuildings}>
-                                            <IoRefresh/>
-                                        </button>
+                                        <button className='refresh' onClick={fetchBuildings}><IoRefresh className='refresh' /></button>
                                     </Offcanvas.Header>
 
                                     <Offcanvas.Body>
-                                    <Nav className="flex-grow-1 pe-3">
+                                        <Nav className="flex-grow-1 pe-3">
                                             <div>
                                                 <UploadModal isOpen={modalIsOpen} closeModal={closeModal}/>
                                                 <Button className='buttonStyle1' onClick={openModal}>
                                                     파일 추가하기
                                                 </Button>
                                             </div>
+
                                             {/* 여기가 건물 이름 리스트 뜨는 부분 */}
 
                                             {buildings.map((building, index) =>
@@ -263,9 +262,8 @@ function SideBar({setGltfBlobUrl, setJsonData, setBuildingId, setFloorNum}) {
                                                     onClick={() => handlesClick(building.buildingId)}
                                                 >
                                                     <NavDropdown.Item className='dropDownButtonStyle'>
-                                                        <Button onClick={() => fetchBuilding(building.buildingId)}>건물
-                                                            도면</Button>
-                                                        <CreateCode buildingId={building.buildingId}/>
+                                                        <Button onClick={()=> fetchBuilding(building.buildingId)}>건물 도면</Button>
+                                                        <CreateCode buildingId={building.buildingId} setOffcanvas={setOffcanvas}/>
                                                     </NavDropdown.Item>
 
                                                     {/* 해당 건물을 눌렀을 때 뜨는  층정보*/}
@@ -291,7 +289,7 @@ function SideBar({setGltfBlobUrl, setJsonData, setBuildingId, setFloorNum}) {
                                             )}
                                         </Nav>
                                     </Offcanvas.Body>
-                                    <button className='logout_link buttonStyle' onClick={() => logout()}>로그아웃
+                                    <button className='logout_link buttonStyle1' onClick={() => logout()}>로그아웃
                                     </button>
                                 </>
                             }

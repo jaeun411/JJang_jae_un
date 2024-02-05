@@ -40,24 +40,24 @@ const Header = ({setGltfBlobUrl, setJsonData, setBuildingId, setFloorNum}) => {
                             <li className="font">회원가입</li>
                         </Link>
 
-                    </>
-                :
-                    <>
-                        <li className="font">
+                        </>
+                        :
+                        <>
+                            <li className="font">
                                 <span>
                                     <IoPersonSharp style={{fontSize: '17px'}}/>
                                     {userInfo.userId}
                                 </span>님 환영합니다.
-                        </li>
-                        <button className='link' onClick={() => logout()}>
-                            <li className="font" style={{fontSize : '16px'}}>로그아웃</li>
-                        </button>
-                    </>
-                }
-              </ul>
-          </div>
-      </header>
-  )
+                            </li>
+                            <button className='link' onClick={() => logout()}>
+                                <li className="font" style={{fontSize: '16px'}}>로그아웃</li>
+                            </button>
+                        </>
+                    }
+                </ul>
+            </div>
+        </header>
+    );
 }
 
 export default Header
