@@ -28,7 +28,6 @@ function SideBar({setGltfBlobUrl, setJsonData, setBuildingId, setFloorNum}) {
     const [offcanvas, setOffcanvas] = useState(false);
 
 
-
     /**
      * 사이드바 열고닫는
      */

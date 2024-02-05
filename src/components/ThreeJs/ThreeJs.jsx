@@ -8,6 +8,7 @@ import "./ThreeJs.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
 import axios from "axios";
+import * as Swal from "../../apis/alert";
 
 // 3D 모델을 렌더링하는 Model 컴포넌트
 const Model = ({ url,onObjectClick, setnewgltf, setText, setModifiedObjects }) => {
@@ -76,6 +77,11 @@ const Model = ({ url,onObjectClick, setnewgltf, setText, setModifiedObjects }) =
 const ObjectDetailsForm = ({ objectDetails, setObjectDetails, onSubmit, onCancel, jsonData, selectedObject }) => {
     // 선택된 오브젝트 정보로 폼 필드 초기화
     const populateFormFields = () => {
+        if (!selectedObject || !jsonData || !jsonData[selectedObject.name]) {
+            // Handle the case where selectedObject or its corresponding data is not available.
+            return;
+        }
+
         if (selectedObject && jsonData[selectedObject.name]) {
             const clickedObjectData = jsonData[selectedObject.name];
 
@@ -233,6 +239,19 @@ const ThreeJs = ({gltfBlobUrl, buildingId, floorNum, jsonData }) => {
             name: objectLabels?.text || object.name || '',
         });
 
+        // Check if object.name exists in jsonData before accessing it
+        if (jsonData && jsonData[object.name]) {
+            const clickedObjectData = jsonData[object.name];
+
+            if (clickedObjectData) {
+                setObjectDetails((prevDetails) => ({
+                    ...prevDetails,
+                    roomName: clickedObjectData.roomName || '',
+                    info: Object.entries(clickedObjectData.info || {}).map(([key, value]) => ({ key, value }))
+                }));
+            }
+        }
+
         console.log('Selected Object UUID:', object.name);
     };
 
@@ -313,7 +332,7 @@ const ThreeJs = ({gltfBlobUrl, buildingId, floorNum, jsonData }) => {
             });
         }
         // TODO 이거 무한루프 해결해야됨!!!!
-      //  setText(objects)
+      setText(objects)
     },[labels])
 
     // 세부 정보 저장 핸들러
@@ -345,6 +364,36 @@ const ThreeJs = ({gltfBlobUrl, buildingId, floorNum, jsonData }) => {
 
                 return updatedData;
             });
+
+
+
+            // JSON 데이터를 바이트 배열로 변환
+            const jsonDataBytes = new TextEncoder().encode(JSON.stringify(jsonData));
+
+            console.log('Data before sending:', jsonData);
+
+            // Send the updated jsonData to the server as a byte array
+            try {
+                const response = await axios.put(
+                    `/file/${buildingId}/${floorNum}`,
+                    jsonDataBytes,
+                    {
+                        headers: {
+                            'Content-Type': 'application/json; charset=UTF-8',
+                        },
+                    }
+                )
+            .then(response => {
+                    if (response.status === 200) { // 서버에서 success 키를 반환하는지 확인해주세요
+                        Swal.alert("수정 성공.", "3D 와 세부정보를 확인해주세요", "success");  // alert를 띄움;
+                    } else {
+                        Swal.alert("수정 실패", "다시 시도 해주세요.", "warning");  // alert를 띄움
+                    }
+
+                });
+            } catch (error) {
+                console.error('Error updating floor:', error);
+            }
 
             setShowDetailsForm(false);
         }
@@ -394,6 +443,8 @@ const ThreeJs = ({gltfBlobUrl, buildingId, floorNum, jsonData }) => {
                               anchorX="center"
                               anchorY="middle"
                               rotation={label.rotation}
+                              //한글 폰트 추가
+                              font={'https://fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Bold.woff'}
                         >
                             {label.text}
                         </Text>

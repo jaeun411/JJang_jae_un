@@ -1,8 +1,6 @@
 // Home.jsx
-import React, {useContext, useState} from 'react';
+import React, {useState} from 'react';
 import Header from '../components/Header/Header';
-import SideBar from "../components/SideBar/SideBar";
-import QR from "qrcode.react";
 import ThreeJs from "../components/ThreeJs/ThreeJs";
 
 const Home = () => {

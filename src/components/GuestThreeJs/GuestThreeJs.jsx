@@ -150,12 +150,13 @@ const ObjectDetailsForm = ({ objectDetails, setObjectDetails, onSubmit, onCancel
         }}>
             {/* 선택된 오브젝트의 이름을 보여주는 레이블과 방 이름 입력 필드 */}
             <div>
-                <label style={{display: 'flex', justifyContent: 'center'}}>{objectDetails.name}</label>
+                <label style={{display: 'flex', justifyContent: 'center'}}>{objectDetails.roomName}</label>
                 <input
                     className="roomName"
                     type="text"
                     value={objectDetails.roomName}
                     onChange={handleRoomNameChange}
+                    disabled
                 />
             </div>
             <br/>
@@ -169,6 +170,7 @@ const ObjectDetailsForm = ({ objectDetails, setObjectDetails, onSubmit, onCancel
                             placeholder="항목"
                             value={item.key}
                             onChange={(e) => handleInfoInputChange(e, index, 'key')}
+                            disabled
                         />
                         <input
                             className="text_value"
@@ -176,27 +178,17 @@ const ObjectDetailsForm = ({ objectDetails, setObjectDetails, onSubmit, onCancel
                             placeholder="값"
                             value={item.value}
                             onChange={(e) => handleInfoInputChange(e, index, 'value')}
+                            disabled
                         />
-                        <button className='btn btn-primary btn_remove'>
-                            <FontAwesomeIcon icon={faTimes}/>
-                        </button>
                     </div>
                 ))}
-                {/* 메타데이터 필드 추가 버튼 */}
-                <button className='btn btn-primary btn_plus' onClick={addMetadataField}>
-                    항목 추가
-                </button>
             </div>
             <br/>
             <div>
                 {/* 저장 및 취소 버튼 */}
                 <div className="button-container">
-                    <button className="btn btn-primary btn-layer-1_1" onClick={onSubmit} style={{marginRight: '10px'}}>
-                        저장
-                        <FontAwesomeIcon icon={faCheck}/>
-                    </button>
                     <button className="btn btn-primary btn-layer-3_1" onClick={onCancel}>
-                        취소
+                        닫기
                         <FontAwesomeIcon icon={faTimes}/>
                     </button>
                 </div>
