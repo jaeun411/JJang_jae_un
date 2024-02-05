@@ -14,12 +14,15 @@ const Home = () => {
     return (
         <>
             <Header/>
-            <SideBar setGltfBlobUrl={setGltfBlobUrl} setBuildingId={setBuildingId} setFloorNum={setFloorNum} setJsonData={setJsonData}/>
-            <div className='container'>
+            <SideBar setGltfBlobUrl={setGltfBlobUrl} setBuildingId={setBuildingId} setFloorNum={setFloorNum}
+                     setJsonData={setJsonData}/>
+            <div>
                 <ThreeJs gltfBlobUrl={gltfBlobUrl} buildingId={buildingId} floorNum={floorNum} jsonData={jsonData}/>
+
             </div>
+
         </>
-    )
+    );
 }
 
 export default Home

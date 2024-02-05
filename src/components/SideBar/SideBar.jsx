@@ -91,17 +91,6 @@ function SideBar({ setGltfBlobUrl, setJsonData}) {
         }
     };
 
-    const buildingdelete =(buildingid) =>{
-        console.log("건물 삭제 요청", buildingid)
-        const response = auth.delBuild(buildingid.buildingId);
-        console.log(response.status);
-        if(response.status==200)
-        {
-            Swal.alert("삭제 성공", "건물 번호:"+buildingId, "success");  // alert를 띄움;
-        }
-
-    }
-
     useEffect(() => {
         if (isLogin) {
             auth.list()
@@ -242,7 +231,7 @@ function SideBar({ setGltfBlobUrl, setJsonData}) {
                                                 <IoPersonSharp />
                                                 {userInfo.userId}</span> 님 환영합니다.
                                         </Offcanvas.Title>
-                                        <Button className='refresh' onClick={fetchBuildings}><IoRefresh className='refresh' /></Button>
+                                        <button className='refresh' onClick={fetchBuildings}><IoRefresh className='refresh' /></button>
                                     </Offcanvas.Header>
                                     <Offcanvas.Body>
                                         <Nav className="flex-grow-1 pe-3">
@@ -254,8 +243,8 @@ function SideBar({ setGltfBlobUrl, setJsonData}) {
                                                     파일 추가하기
                                                 </Button>
                                             </div>
-                                            {/* 여기가 건물 이름 리스트 뜨는 부분 */}
 
+                                            {/* 여기가 건물 이름 리스트 뜨는 부분 */}
                                             {buildings.map((building, index) =>
                                                 <NavDropdown
                                                     className='dropDownItemTitleStyle'
@@ -266,8 +255,7 @@ function SideBar({ setGltfBlobUrl, setJsonData}) {
                                                 >
                                                     <NavDropdown.Item className='dropDownButtonStyle'>
                                                         <Button onClick={()=> fetchBuilding(building.buildingId)}>건물 도면</Button>
-                                                        <CreateCode buildingId={building.buildingId}/>
-                                                        <Button onClick={()=> buildingdelete(building)}>삭제</Button>
+                                                        <CreateCode buildingId={building.buildingId} setOffcanvas={setOffcanvas}/>
                                                     </NavDropdown.Item>
                                                     {/* 해당 건물을 눌렀을 때 뜨는  층정보*/}
                                                     {floors.map((floor, index) =>
@@ -296,7 +284,7 @@ function SideBar({ setGltfBlobUrl, setJsonData}) {
                                             )}
                                         </Nav>
                                     </Offcanvas.Body>
-                                    <button className='logout_link buttonStyle' onClick={() => logout()}>로그아웃
+                                    <button className='logout_link buttonStyle1' onClick={() => logout()}>로그아웃
                                     </button>
                                 </>
                             }
