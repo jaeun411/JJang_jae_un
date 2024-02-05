@@ -18,9 +18,7 @@ const UserPage = () => {
 
     return (
         <>
-            <header style={{backgroundColor : 'white'}}>
-                <GuestSideBar buildingId={buildingId} setBuildingId={setBuildingId} setGltfBlobUrl={setGltfBlobUrl} setJsonData={setJsonData}/>
-            </header>
+            <GuestSideBar buildingId={buildingId} setBuildingId={setBuildingId} setGltfBlobUrl={setGltfBlobUrl} setJsonData={setJsonData}/>
             <div >
                 <GuestThreeJs gltfBlobUrl={gltfBlobUrl} jsonData={jsonData}/>
             </div>

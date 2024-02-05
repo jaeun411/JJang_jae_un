@@ -17,7 +17,6 @@ const App = () => {
   return (
       <BrowserRouter>                {/* URL 관리, 브라우저의 주소를 처리 */}
         <LoginContextProvider>       {/* 로그인 관리 */}
-          {/*<SnowEffect/> /!* 모든 페이지에 눈내리는 효과를 추가합니다. *!/*/}
           <Routes>                   {/* 어떤 컴포넌트를 렌더링할지 결정하는 역할 */}
             <Route path="/home" element={<Home/>}/>
             <Route path="/" element={<Login/>}/>

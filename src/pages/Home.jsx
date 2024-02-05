@@ -13,11 +13,12 @@ const Home = () => {
 
     return (
         <>
-            <Header/>
-            <SideBar setGltfBlobUrl={setGltfBlobUrl} setBuildingId={setBuildingId} setFloorNum={setFloorNum} setJsonData={setJsonData}/>
-            <div className='container'>
-                <ThreeJs gltfBlobUrl={gltfBlobUrl} buildingId={buildingId} floorNum={floorNum} jsonData={jsonData}/>
-            </div>
+            <Header setGltfBlobUrl={setGltfBlobUrl}
+                    setBuildingId={setBuildingId}
+                    setFloorNum={setFloorNum}
+                    setJsonData={setJsonData} />
+
+            <ThreeJs gltfBlobUrl={gltfBlobUrl} buildingId={buildingId} floorNum={floorNum} jsonData={jsonData}/>
         </>
     )
 }

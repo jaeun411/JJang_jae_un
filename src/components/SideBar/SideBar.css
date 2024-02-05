@@ -13,15 +13,25 @@
     z-index: 1050; /* Offcanvas의 z-index보다 높은 값 */
 }
 
+.sidebarHeader {
+    display: flex;
+    align-items: center;
+
+    text-align: center;
+    font-size: 25px;
+    font-weight: bold;
+
+}
+
 .refresh {
     color: #4f4d4d;
-    font-size: 23px;
-    margin-right: -50px;
-    margin-bottom: 2px;
+    border: none;
+    background-color: white;
+    margin-right: -35%;
 }
 {/* background-color: #fdf2e9;*/}
 
-.buttonStyle {
+.buttonStyle1 {
     background-color: skyblue;
     color: white;
     font-size: 20px;

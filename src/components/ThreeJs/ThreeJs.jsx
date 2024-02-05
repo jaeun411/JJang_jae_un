@@ -300,7 +300,6 @@ const ThreeJs = ({gltfBlobUrl, buildingId, floorNum ,jsonData }) => {
     };
 
     useEffect(()=>{
-        setLabels({});
         if(gltf)
         {
             gltf.traverse((child) => {
@@ -309,7 +308,7 @@ const ThreeJs = ({gltfBlobUrl, buildingId, floorNum ,jsonData }) => {
                 }
             });
         }
-        setText(objects)
+      //  setText(objects)
     },[labels])
 
     // 세부 정보 저장 핸들러
@@ -369,11 +368,11 @@ const ThreeJs = ({gltfBlobUrl, buildingId, floorNum ,jsonData }) => {
 
     // 렌더링
     return (
-        <div style={{marginLeft: "150px"}}>
-            <div>
+        <div>
+            <div style={{ width:"100%" }}>
                 {/* 3D 캔버스 */}
                 <Canvas
-                    style={{height: "1000px", width: "1200px", marginLeft: "20px"}}
+                    style={{width: "100%", height: "100vh"}}
                 >
                     <OrbitControls/>
                     <ambientLight intensity={1.0}/>

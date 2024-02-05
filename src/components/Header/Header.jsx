@@ -3,19 +3,28 @@ import {Link} from 'react-router-dom'
 import './Header.css'
 import {LoginContext} from '../../contexts/LoginContextProvider';
 import { IoPersonSharp } from "react-icons/io5";
+import SideBar from "../SideBar/SideBar";
 
-const Header = () => {
+const Header = ({setGltfBlobUrl, setJsonData, setBuildingId, setFloorNum}) => {
 
     // ✅ isLogin   : 로그인 여부 - Y(true), N(false)
     // ✅ logout()  : 로그아웃 함수 - setIsLogin(false)
     const { isLogin, logout, userInfo } = useContext(LoginContext);
     return (
       <header>
+          <div>
+              <SideBar setGltfBlobUrl={setGltfBlobUrl}
+                   setBuildingId={setBuildingId}
+                   setFloorNum={setFloorNum}
+                   setJsonData={setJsonData}/>
+          </div>
+
           <div className="logo">
               <Link to="/home">
                 <img src= "/img/logo.jpg" alt="logo" className='logo' />
               </Link>
           </div>
+
           <div className="util">
               <ul className="menu-list">
                 {/* 로그인 여부에 따라 조건부 랜더링 */}
