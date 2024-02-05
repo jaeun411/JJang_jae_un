@@ -10,7 +10,7 @@ body {
   font-size: var(--font-size-main);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: url("./components/Assets/background.jpg") no-repeat center;
+  background: url("./components/Assets/벨리곰.jpg") no-repeat center;
   background-size: 100%;
 }
 ul { list-style-type: none; }

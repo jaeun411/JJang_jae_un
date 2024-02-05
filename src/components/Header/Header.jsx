@@ -2,6 +2,7 @@ import React, {useContext} from 'react';
 import {Link} from 'react-router-dom'
 import './Header.css'
 import {LoginContext} from '../../contexts/LoginContextProvider';
+import { IoPersonSharp } from "react-icons/io5";
 
 const Header = () => {
 
@@ -19,18 +20,30 @@ const Header = () => {
               <ul className="menu-list">
                 {/* 로그인 여부에 따라 조건부 랜더링 */}
                 { !isLogin ?
-                  <>
-                    <Link to="/"><li className="font">로그인</li></Link>
-                    <Link to="/join"><li className="font">회원가입</li></Link>
-                    <Link to="/about"><li className="font">소개</li></Link>
-                    <Link to="/admin"><li className="font">관리자</li></Link>
-                  </>
+                    <>
+                        <Link to="/">
+                            <li className="font">로그인</li>
+                        </Link>
+                        <Link to="">
+                            <li className="font">•</li>
+                        </Link>
+                        <Link to="/join">
+                            <li className="font">회원가입</li>
+                        </Link>
+
+                    </>
                 :
-                  <>
-                    <Link to="/user"><li className="font">마이페이지({userInfo.userId})</li></Link>
-                    <Link to="/admin"><li className="font">관리자</li></Link>
-                    <button className='link' onClick={ () => logout() }><li className="font">로그아웃</li></button>
-                  </>
+                    <>
+                        <li className="font">
+                                <span>
+                                    <IoPersonSharp style={{fontSize: '17px'}}/>
+                                    {userInfo.userId}
+                                </span>님 환영합니다.
+                        </li>
+                        <button className='link' onClick={() => logout()}>
+                            <li className="font" style={{fontSize : '16px'}}>로그아웃</li>
+                        </button>
+                    </>
                 }
               </ul>
           </div>

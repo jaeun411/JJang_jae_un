@@ -46,7 +46,7 @@ const CreateCode = ({buildingId}) => {
                 e.stopPropagation();
                 generateQRCode();
             }}>
-                건물 QR코드 생성
+                QR생성
             </Button>
 
             {

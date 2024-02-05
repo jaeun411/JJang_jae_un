@@ -12,3 +12,39 @@
 .react-modal-overlay {
     z-index: 1050; /* Offcanvas의 z-index보다 높은 값 */
 }
+
+.refresh {
+    color: #4f4d4d;
+    font-size: 23px;
+    margin-right: -50px;
+    margin-bottom: 2px;
+}
+{/* background-color: #fdf2e9;*/}
+
+.buttonStyle {
+    background-color: skyblue;
+    color: white;
+    font-size: 20px;
+}
+
+.buttonStyle {
+    background-color: white;
+    color: grey;
+    font-size: 17px;
+    position : absolute;
+    bottom : 0;
+    right : 6%;
+}
+
+.dropDownItemTitleStyle {
+    text-align: left;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.dropDownButtonStyle {
+    display: flex;
+    justify-content: space-between;
+    background-color: white;
+    align-items: center;
+}
