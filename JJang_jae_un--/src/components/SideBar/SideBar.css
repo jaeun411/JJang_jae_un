@@ -1,0 +1,59 @@
+.bg-white{
+    position: fixed;
+    left: 0;
+}
+
+.logout_link{
+    border: none;
+    margin-bottom: 20px;
+    margin-left: 250px;
+}
+
+.react-modal-overlay {
+    z-index: 1050; /* Offcanvas의 z-index보다 높은 값 */
+}
+
+.refresh {
+    color: #4f4d4d;
+    font-size: 23px;
+    border: none;
+    background-color: #fdf6de;
+    margin-left: 25%;
+    margin-bottom: 2px;
+}
+{/* background-color: #fdf2e9;*/}
+
+
+.buttonStyle1 {
+    background-color: #fdf6de;
+    color: #522b07;
+    font-size: 17px;
+    position : absolute;
+    bottom : 0;
+    right : 6%;
+    font-weight: bold;
+}
+
+.dropDownItemTitleStyle {
+    text-align: left;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.dropDownButtonStyle {
+    display: flex;
+    justify-content: space-between;
+    background-color: white;
+    align-items: center;
+}
+
+.itemBtnStyle {
+    background-color: transparent;
+    color: #522b07;
+    border: 2px solid #522b07;
+    border-radius: 10px;
+    width: 90px;
+    height: 35px;
+    font-size: 18px;
+    font-weight: bold;
+}

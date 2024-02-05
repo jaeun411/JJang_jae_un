@@ -1,0 +1,117 @@
+/*.icon {*/
+/*    width: 100px;*/
+/*    height: 100px;*/
+/*    pointer-events: none;*/
+/*}*/
+
+.file {
+    display: none;
+}
+
+.file::file-selector-button {
+    font-size: 14px;
+    background: #fff;
+    border: 1px solid #111;
+    border-radius: 12px;
+    padding: 4px 32px;
+    cursor: pointer;
+}
+
+.preview {
+    width: 500px;
+    height: 400px;
+    margin: 50px auto auto auto;
+    background-color: #fff;
+    border-radius: 5px;
+    border: 3px dashed #eee;
+    padding: 50px 10px 100px 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.preview:hover {
+    border-color: #111;
+}
+
+.preview_msg {
+    font-weight: 500;
+    font-size: 18px;
+    margin: 20px 0 10px;
+}
+
+.preview_desc {
+    margin: 10px;
+    font-size: 14px;
+}
+
+.preview.active {
+    background-color: #efeef3;
+    border-color: #111;
+}
+
+.preview_info {
+    width: 100%;
+    padding: 0;
+    gap: 16px;
+    font-size: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.preview_info li {
+    display: flex; /* Flexbox 레이아웃 적용 */
+    align-items: center; /* 아이템들을 세로 중앙 정렬 */
+    justify-content: flex-start; /* 아이템들을 가로로 시작점부터 배열 */
+    gap: 8px; /* 아이템 사이의 간격 설정 */
+    flex-wrap: wrap; /* 필요한 경우 아이템을 다음 줄로 넘김 */
+}
+
+.preview_info .info_key,
+.preview_info .info_value {
+    margin-bottom: 0; /* 기존의 마진 제거 */
+    display: inline-block; /* 인라인 블록 요소로 변경 */
+}
+
+/* 이미지 스타일링 - 이미지가 별도의 li 안에 있으므로 기존 스타일 유지 */
+.preview_info img {
+    max-width: 200%; /* 박스의 너비에 맞춤 */
+    max-height: 270px; /* 박스의 높이에 맞춤 */
+    object-fit: contain; /* 이미지 비율을 유지하면서 박스에 맞춤 */
+    border-radius: 5px; /* 이미지 모서리를 둥글게 */
+    margin-top: 25px;
+}
+
+.file_con {
+    display: flex;
+    justify-content: space-between;
+}
+
+.input_con {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    margin-top: 50px;
+    margin-right: 200px;
+    width: 400px;
+    padding: 36px 48px 48px 48px;
+    background-color: #f2efee;
+    border-radius: 11px;
+    box-shadow: 0 2.4rem 4.8rem rgba(0, 0, 0, 0.15);
+}
+
+.text_input {
+    width: 100%;
+    padding: 1.2rem;
+    border-radius: 9px;
+    border: none;
+    margin-bottom: 100px;
+}
+
+.text_input:focus{
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(253, 242, 233, 0.5);
+}
+

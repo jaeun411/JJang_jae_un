@@ -1,0 +1,33 @@
+
+.building_name{
+    width: 30%;
+    height: 20px;
+    padding: 1.2rem;
+    border-radius: 9px;
+    border: none;
+    margin-right: 30px;
+    margin-left : 10px;
+}
+
+.building_floor{
+    width: 30%;
+    height: 20px;
+    padding: 1.2rem;
+    border-radius: 9px;
+    border: none;
+    margin-left : 10px;
+}
+
+.btn-add{
+    margin-right: 10px;
+}
+.btn-minus{
+}
+
+.btn-x{
+    position: absolute;
+    right: 10px;
+    top: 1px;
+    background-color: #B0E0E6;
+    color: gray;
+}
