@@ -4,7 +4,7 @@ import { Canvas, useThree } from '@react-three/fiber';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { OrbitControls, Text } from '@react-three/drei';
 import * as THREE from 'three';
-import "./ThreeJs.css";
+import "../ThreeJs/ThreeJs.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
 
@@ -75,13 +75,17 @@ const Model = ({ url,onObjectClick, setnewgltf, setText, setModifiedObjects }) =
 const ObjectDetailsForm = ({ objectDetails, setObjectDetails, onSubmit, onCancel, jsonData, selectedObject }) => {
     // 선택된 오브젝트 정보로 폼 필드 초기화
     const populateFormFields = () => {
+        if (!selectedObject || !jsonData) {
+            return;
+        }
+
         const clickedObjectData = jsonData[selectedObject.name];
 
         if (clickedObjectData) {
             setObjectDetails((prevDetails) => ({
                 ...prevDetails,
                 roomName: clickedObjectData.roomName || '',
-                info: Object.entries(clickedObjectData.info || {}).map(([key, value]) => ({ key, value }))
+                info: (clickedObjectData.info || {}).map(([key, value]) => ({ key, value })) || []
             }));
         }
     };
@@ -121,7 +125,7 @@ const ObjectDetailsForm = ({ objectDetails, setObjectDetails, onSubmit, onCancel
             ...prevDetails,
             info: [
                 ...prevDetails.info,
-                { key: '' , value: '' }
+                { key: "" , value: "" }
             ]
         }));
     };
@@ -202,7 +206,7 @@ const ObjectDetailsForm = ({ objectDetails, setObjectDetails, onSubmit, onCancel
 };
 
 // ThreeJs 컴포넌트
-const ThreeJs = ({gltfBlobUrl, buildingId, floorNum ,jsonData }) => {
+const GuestThreeJs = ({gltfBlobUrl, buildingId, floorNum, jsonData }) => {
     const [labels, setLabels] = useState({});
     //이걸로 건물 정보 입력 모달 상태 관리(true 열림, false 닫힘)
     const [showDetailsForm, setShowDetailsForm] = useState(false);
@@ -217,7 +221,7 @@ const ThreeJs = ({gltfBlobUrl, buildingId, floorNum ,jsonData }) => {
     // 초기에 JSON 데이터 설정
     useEffect(() => {
         setData(jsonData);
-    }, []);
+    }, [jsonData]);
 
     // 오브젝트 클릭 핸들러
     const handleObjectClick = (object) => {
@@ -256,7 +260,7 @@ const ThreeJs = ({gltfBlobUrl, buildingId, floorNum ,jsonData }) => {
                     return {
                         ...prevLabels,
                         [object.uuid]: {
-                            text: object.name,
+                            text: jsonData[object.name].roomName,
                             //text: name,
                             position: center.toArray(),
                             fontSize,
@@ -353,9 +357,9 @@ const ThreeJs = ({gltfBlobUrl, buildingId, floorNum ,jsonData }) => {
 
     // JSON 다운로드 핸들러
     const handleDownloadJson = () => {
-        console.log('data:', data)
+        console.log('data:', jsonData)
         // 데이터 객체를 JSON 문자열로 변환
-        const jsonDataString = JSON.stringify(data, null, 2);
+        const jsonDataString = JSON.stringify(jsonData, null, 2);
 
         // JSON 문자열로 Blob 생성
         const blob = new Blob([jsonDataString], { type: 'application/json' });
@@ -369,11 +373,11 @@ const ThreeJs = ({gltfBlobUrl, buildingId, floorNum ,jsonData }) => {
 
     // 렌더링
     return (
-        <div style={{marginLeft: "150px"}}>
+        <div style={{marginLeft: "20px"}}>
             <div>
                 {/* 3D 캔버스 */}
                 <Canvas
-                    style={{height: "1000px", width: "1200px", marginLeft: "20px"}}
+                    style={{height: "1000px", width: "100%"}}
                 >
                     <OrbitControls/>
                     <ambientLight intensity={1.0}/>
@@ -413,4 +417,4 @@ const ThreeJs = ({gltfBlobUrl, buildingId, floorNum ,jsonData }) => {
     );
 };
 
-export default ThreeJs;
+export default GuestThreeJs;

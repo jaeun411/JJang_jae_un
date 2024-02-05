@@ -149,7 +149,8 @@ function SideBar({setGltfBlobUrl, setJsonData, setBuildingId, setFloorNum}) {
      */
     const fetchModel = (buildingId, floor) => {
         //floor에 데이터가 null이 아닐 때만 실행
-        if (floor.null == false) {
+        if(floor.null===false)
+        {
             const url = `/file/${buildingId}/${floor.floorNum}`;
             axios.get(url) // Blob 형태로 받아옵니다.
                 // { responseType: 'blob' }
@@ -160,7 +161,8 @@ function SideBar({setGltfBlobUrl, setJsonData, setBuildingId, setFloorNum}) {
 
                     const decodedString = atob(metaData);
                     const utf8Decoder = new TextDecoder('utf-8');
-                    const jsonData = utf8Decoder.decode(new Uint8Array(decodedString.split('').map(char => char.charCodeAt(0))));
+                    const jsonString = utf8Decoder.decode(new Uint8Array(decodedString.split('').map(char => char.charCodeAt(0))));
+                    const jsonData = JSON.parse(jsonString);
 
                     // floorFileData를 base64 디코딩하여 Blob 생성
                     const byteCharacters = atob(floorFileData);

@@ -7,6 +7,7 @@ import * as THREE from 'three';
 import "./ThreeJs.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
+import axios from "axios";
 
 // 3D 모델을 렌더링하는 Model 컴포넌트
 const Model = ({ url,onObjectClick, setnewgltf, setText, setModifiedObjects }) => {
@@ -75,14 +76,16 @@ const Model = ({ url,onObjectClick, setnewgltf, setText, setModifiedObjects }) =
 const ObjectDetailsForm = ({ objectDetails, setObjectDetails, onSubmit, onCancel, jsonData, selectedObject }) => {
     // 선택된 오브젝트 정보로 폼 필드 초기화
     const populateFormFields = () => {
-        const clickedObjectData = jsonData[selectedObject.name];
+        if (selectedObject && jsonData[selectedObject.name]) {
+            const clickedObjectData = jsonData[selectedObject.name];
 
-        if (clickedObjectData) {
-            setObjectDetails((prevDetails) => ({
-                ...prevDetails,
-                roomName: clickedObjectData.roomName || '',
-                info: Object.entries(clickedObjectData.info || {}).map(([key, value]) => ({ key, value }))
-            }));
+            if (clickedObjectData) {
+                setObjectDetails((prevDetails) => ({
+                    ...prevDetails,
+                    roomName: clickedObjectData.roomName || '',
+                    info: Object.entries(clickedObjectData.info || {}).map(([key, value]) => ({ key, value }))
+                }));
+            }
         }
     };
 
@@ -146,7 +149,7 @@ const ObjectDetailsForm = ({ objectDetails, setObjectDetails, onSubmit, onCancel
         }}>
             {/* 선택된 오브젝트의 이름을 보여주는 레이블과 방 이름 입력 필드 */}
             <div>
-                <label style={{display: 'flex', justifyContent: 'center'}}>{objectDetails.name}</label>
+                <label style={{display: 'flex', justifyContent: 'center'}}>{objectDetails.roomName}</label>
                 <input
                     className="roomName"
                     type="text"
@@ -202,7 +205,7 @@ const ObjectDetailsForm = ({ objectDetails, setObjectDetails, onSubmit, onCancel
 };
 
 // ThreeJs 컴포넌트
-const ThreeJs = ({gltfBlobUrl, buildingId, floorNum ,jsonData }) => {
+const ThreeJs = ({gltfBlobUrl, buildingId, floorNum, jsonData }) => {
     const [labels, setLabels] = useState({});
     //이걸로 건물 정보 입력 모달 상태 관리(true 열림, false 닫힘)
     const [showDetailsForm, setShowDetailsForm] = useState(false);
@@ -217,7 +220,7 @@ const ThreeJs = ({gltfBlobUrl, buildingId, floorNum ,jsonData }) => {
     // 초기에 JSON 데이터 설정
     useEffect(() => {
         setData(jsonData);
-    }, []);
+    }, [jsonData]);
 
     // 오브젝트 클릭 핸들러
     const handleObjectClick = (object) => {
@@ -256,7 +259,7 @@ const ThreeJs = ({gltfBlobUrl, buildingId, floorNum ,jsonData }) => {
                     return {
                         ...prevLabels,
                         [object.uuid]: {
-                            text: object.name,
+                            text: jsonData[object.name].roomName,
                             //text: name,
                             position: center.toArray(),
                             fontSize,
@@ -300,6 +303,7 @@ const ThreeJs = ({gltfBlobUrl, buildingId, floorNum ,jsonData }) => {
     };
 
     useEffect(()=>{
+        setLabels({});
         if(gltf)
         {
             gltf.traverse((child) => {
@@ -308,11 +312,12 @@ const ThreeJs = ({gltfBlobUrl, buildingId, floorNum ,jsonData }) => {
                 }
             });
         }
+        // TODO 이거 무한루프 해결해야됨!!!!
       //  setText(objects)
     },[labels])
 
     // 세부 정보 저장 핸들러
-    const handleSubmitDetails = () => {
+    const handleSubmitDetails = async () => {
         if (selectedObject) {
             updateLabel(objectDetails.roomName, selectedObject);
             setModifiedObjects((prevObjects) => ({
@@ -352,9 +357,9 @@ const ThreeJs = ({gltfBlobUrl, buildingId, floorNum ,jsonData }) => {
 
     // JSON 다운로드 핸들러
     const handleDownloadJson = () => {
-        console.log('data:', data)
+        console.log('data:', jsonData)
         // 데이터 객체를 JSON 문자열로 변환
-        const jsonDataString = JSON.stringify(data, null, 2);
+        const jsonDataString = JSON.stringify(jsonData, null, 2);
 
         // JSON 문자열로 Blob 생성
         const blob = new Blob([jsonDataString], { type: 'application/json' });

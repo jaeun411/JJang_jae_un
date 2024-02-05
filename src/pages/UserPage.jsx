@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import { useLocation } from 'react-router-dom';
-import GuestSideBar from "../components/SideBar/GuestSideBar";
-import GuestThreeJs from "../components/ThreeJs/GuestThreeJs";
+import GuestSideBar from "../components/GuestSideBar/GuestSideBar";
+import GuestThreeJs from "../components/GuestThreeJs/GuestThreeJs";
 
 const UserPage = () => {
     const location = useLocation();
