@@ -7,6 +7,7 @@ import * as THREE from 'three';
 import "./ThreeJs.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
+import axios from "axios";
 
 // 3D 모델을 렌더링하는 Model 컴포넌트
 const Model = ({ url,onObjectClick, setnewgltf, setText, setModifiedObjects }) => {
@@ -75,14 +76,16 @@ const Model = ({ url,onObjectClick, setnewgltf, setText, setModifiedObjects }) =
 const ObjectDetailsForm = ({ objectDetails, setObjectDetails, onSubmit, onCancel, jsonData, selectedObject }) => {
     // 선택된 오브젝트 정보로 폼 필드 초기화
     const populateFormFields = () => {
-        const clickedObjectData = jsonData[selectedObject.name];
+        if (selectedObject && jsonData[selectedObject.name]) {
+            const clickedObjectData = jsonData[selectedObject.name];
 
-        if (clickedObjectData) {
-            setObjectDetails((prevDetails) => ({
-                ...prevDetails,
-                roomName: clickedObjectData.roomName || '',
-                info: Object.entries(clickedObjectData.info || {}).map(([key, value]) => ({ key, value }))
-            }));
+            if (clickedObjectData) {
+                setObjectDetails((prevDetails) => ({
+                    ...prevDetails,
+                    roomName: clickedObjectData.roomName || '',
+                    info: Object.entries(clickedObjectData.info || {}).map(([key, value]) => ({ key, value }))
+                }));
+            }
         }
     };
 
@@ -217,7 +220,7 @@ const ThreeJs = ({gltfBlobUrl, buildingId, floorNum, jsonData }) => {
     // 초기에 JSON 데이터 설정
     useEffect(() => {
         setData(jsonData);
-    }, []);
+    }, [jsonData]);
 
     // 오브젝트 클릭 핸들러
     const handleObjectClick = (object) => {
@@ -313,7 +316,7 @@ const ThreeJs = ({gltfBlobUrl, buildingId, floorNum, jsonData }) => {
     },[labels])
 
     // 세부 정보 저장 핸들러
-    const handleSubmitDetails = () => {
+    const handleSubmitDetails = async () => {
         if (selectedObject) {
             updateLabel(objectDetails.roomName, selectedObject);
             setModifiedObjects((prevObjects) => ({

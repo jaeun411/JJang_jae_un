@@ -16,7 +16,7 @@ import { IoMdRefresh } from "react-icons/io";
 import UpdateSidebar from './updateSidebar';
 import CreateCode from "../../pages/QR";
 
-function SideBar({ setGltfBlobUrl, setJsonData}) {
+function SideBar({ setGltfBlobUrl, setJsonData, setFloorNum, setBuildingId}) {
     const { isLogin, logout, userInfo } = useContext(LoginContext);
     const navigate = useNavigate();
 
@@ -25,8 +25,6 @@ function SideBar({ setGltfBlobUrl, setJsonData}) {
 
     const [buildings, setBuildings] = useState([]);
     const [floors, setFloors] = useState([]);
-    const [buildingId, setBuildingId] = useState(null);
-    const [floorNum, setFloorNum] = useState(null);
     const [offcanvas, setOffcanvas] = useState(false);
 
     const [buildingData, setbuildingData] = useState({
@@ -118,7 +116,7 @@ function SideBar({ setGltfBlobUrl, setJsonData}) {
         console.log(response.status);
         if(response.status==200)
         {
-            Swal.alert("삭제 성공", "건물 번호:"+buildingId, "success");  // alert를 띄움;
+            Swal.alert("삭제 성공", "사이드바를 확인 해주세요.", "success");  // alert를 띄움;
         }
 
     }

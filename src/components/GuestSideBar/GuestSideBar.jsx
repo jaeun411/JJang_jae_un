@@ -4,7 +4,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import React, { useEffect, useState} from "react";
-import './SideBar.css';
+import '../SideBar/SideBar.css';
 import axios from "axios";
 
 
