@@ -146,7 +146,7 @@ const ObjectDetailsForm = ({ objectDetails, setObjectDetails, onSubmit, onCancel
         }}>
             {/* 선택된 오브젝트의 이름을 보여주는 레이블과 방 이름 입력 필드 */}
             <div>
-                <label style={{display: 'flex', justifyContent: 'center'}}>{objectDetails.name}</label>
+                <label style={{display: 'flex', justifyContent: 'center'}}>{objectDetails.roomName}</label>
                 <input
                     className="roomName"
                     type="text"
@@ -202,7 +202,7 @@ const ObjectDetailsForm = ({ objectDetails, setObjectDetails, onSubmit, onCancel
 };
 
 // ThreeJs 컴포넌트
-const ThreeJs = ({gltfBlobUrl, buildingId, floorNum ,jsonData }) => {
+const ThreeJs = ({gltfBlobUrl, buildingId, floorNum, jsonData }) => {
     const [labels, setLabels] = useState({});
     //이걸로 건물 정보 입력 모달 상태 관리(true 열림, false 닫힘)
     const [showDetailsForm, setShowDetailsForm] = useState(false);
@@ -256,7 +256,7 @@ const ThreeJs = ({gltfBlobUrl, buildingId, floorNum ,jsonData }) => {
                     return {
                         ...prevLabels,
                         [object.uuid]: {
-                            text: object.name,
+                            text: jsonData[object.name].roomName,
                             //text: name,
                             position: center.toArray(),
                             fontSize,
@@ -353,9 +353,9 @@ const ThreeJs = ({gltfBlobUrl, buildingId, floorNum ,jsonData }) => {
 
     // JSON 다운로드 핸들러
     const handleDownloadJson = () => {
-        console.log('data:', data)
+        console.log('data:', jsonData)
         // 데이터 객체를 JSON 문자열로 변환
-        const jsonDataString = JSON.stringify(data, null, 2);
+        const jsonDataString = JSON.stringify(jsonData, null, 2);
 
         // JSON 문자열로 Blob 생성
         const blob = new Blob([jsonDataString], { type: 'application/json' });
@@ -369,11 +369,11 @@ const ThreeJs = ({gltfBlobUrl, buildingId, floorNum ,jsonData }) => {
 
     // 렌더링
     return (
-        <div style={{marginLeft: "150px"}}>
+        <div style={{marginLeft: "20px"}}>
             <div>
                 {/* 3D 캔버스 */}
                 <Canvas
-                    style={{height: "1000px", width: "1200px", marginLeft: "20px"}}
+                    style={{height: "1000px", width: "100%"}}
                 >
                     <OrbitControls/>
                     <ambientLight intensity={1.0}/>

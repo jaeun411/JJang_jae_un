@@ -25,7 +25,6 @@ function SideBar({ setGltfBlobUrl, setJsonData}) {
 
     const [buildings, setBuildings] = useState([]);
     const [floors, setFloors] = useState([]);
-    const [modelUrl, setModelUrl] = useState(null);
     const [buildingId, setBuildingId] = useState(null);
     const [floorNum, setFloorNum] = useState(null);
     const [offcanvas, setOffcanvas] = useState(false);
@@ -175,7 +174,7 @@ function SideBar({ setGltfBlobUrl, setJsonData}) {
     //빌딩id,층수를 넘겨주면, 3D 도면 glb파일
     const fetchModel = (buildingId, floor) => {
         //floor에 데이터가 null이 아닐 때만 실행
-        if(floor.null==false)
+        if(floor.null===false)
         {
             const url = `/file/${buildingId}/${floor.floorNum}`;
             axios.get(url) // Blob 형태로 받아옵니다.
@@ -186,7 +185,8 @@ function SideBar({ setGltfBlobUrl, setJsonData}) {
 
                     const decodedString = atob(metaData);
                     const utf8Decoder = new TextDecoder('utf-8');
-                    const jsonData = utf8Decoder.decode(new Uint8Array(decodedString.split('').map(char => char.charCodeAt(0))));
+                    const jsonString = utf8Decoder.decode(new Uint8Array(decodedString.split('').map(char => char.charCodeAt(0))));
+                    const jsonData = JSON.parse(jsonString);
 
                     //console.log(objectJson);
 

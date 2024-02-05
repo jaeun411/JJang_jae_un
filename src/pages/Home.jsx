@@ -9,7 +9,7 @@ const Home = () => {
     const [gltfBlobUrl, setGltfBlobUrl] = useState(null);
     const [buildingId, setBuildingId] = useState(null);
     const [floorNum, setFloorNum] = useState(null);
-    const [jsonData, setJsonData] = useState({});
+    const [jsonData, setJsonData] = useState(null);
 
     return (
         <>
