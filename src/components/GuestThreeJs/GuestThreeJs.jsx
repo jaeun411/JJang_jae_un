@@ -6,10 +6,11 @@ import { OrbitControls, Text } from '@react-three/drei';
 import * as THREE from 'three';
 import "../ThreeJs/ThreeJs.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import Draggable from 'react-draggable';
 
 // 3D 모델을 렌더링하는 Model 컴포넌트
-const Model = ({ url,onObjectClick, setnewgltf, setText, setModifiedObjects }) => {
+const Model = ({ url,onObjectClick, setnewgltf, setModifiedObjects }) => {
     const [gltf, setGltf] = useState(null);
     const meshRef = useRef();
     const { camera } = useThree();
@@ -140,6 +141,10 @@ const ObjectDetailsForm = ({ objectDetails, setObjectDetails, onSubmit, onCancel
 
     // 렌더링
     return (
+        <Draggable
+            defaultPosition={{ x: 70, y: 20 }} // Set the default position
+            bounds="parent" // Restrict dragging to the parent element
+        >
         <div className="input_con" style={{
             position: 'absolute',
             top: '20%',
@@ -194,6 +199,7 @@ const ObjectDetailsForm = ({ objectDetails, setObjectDetails, onSubmit, onCancel
                 </div>
             </div>
         </div>
+        </Draggable>
     );
 };
 
