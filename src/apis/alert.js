@@ -13,6 +13,9 @@ export const alert = (title, text, icon, callback) => {
         title: title,
         text: text,
         icon: icon,
+        confirmButtonColor: "#522b07",
+        confirmButtonText: "OK",
+        confirmButtonTextColor: "white",
     })
     .then( callback )
   }
@@ -24,9 +27,9 @@ export const confirm = (title, text, icon, callback) => {
         text: text,
         icon: icon,
         showCancelButton: true,
-        cancelButtonColor: "#d33",
+        cancelButtonColor: "lightgray",
         cancelButtonText: "No",
-        confirmButtonColor: "#3085d6",
+        confirmButtonColor: "#522b07",
         confirmButtonText: "Yes",
     })
         .then((result) => {
@@ -42,9 +45,9 @@ export const confirms = (title, text, icon, callback) => {
         text: text,
         icon: icon,
         showCancelButton: true,
-        cancelButtonColor: "#d33",
+        cancelButtonColor: "gray",
         cancelButtonText: "No",
-        confirmButtonColor: "#3085d6",
+        confirmButtonColor: "#522b07",
         confirmButtonText: "Yes",
     })
         .then( callback )

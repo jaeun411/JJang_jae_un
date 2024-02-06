@@ -2,7 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
 * {
-  margin: 0; padding: 0; box-sizing: border-box; 
+  margin: 0; padding: 0; box-sizing: border-box;
   font-family: 'Noto Sans', 'Noto Sans KR', sans-serif;
 }
 body {
@@ -10,14 +10,13 @@ body {
   font-size: var(--font-size-main);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: url("./components/Assets/background.jpg") no-repeat center;
-  background-size: 100%;
+  background: url("./components/Assets/건축물.jpg") no-repeat center;
+  background-size: cover;
 }
 ul { list-style-type: none; }
 a { text-decoration: none; color: black; }
 button { cursor: pointer; }
 .link { background-color: transparent; color: black; border: none; font-size: var(--font-size-main); }
-
 
 :root {
   --font-size-main : 20px;

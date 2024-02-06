@@ -28,7 +28,7 @@ const JoinForm = ({ join }) => {
             <input
                 id="username"
                 type="text"
-                placeholder="Userid"
+                placeholder="UserId"
                 name="username"
                 autoComplete="new-username"
                 required
@@ -69,7 +69,7 @@ const JoinForm = ({ join }) => {
               <MdOutlineEmail className='icon'/>
           </div>
           <br/>
-          <button type="submit">
+          <button type="submit" style={{backgroundColor : '#7a573e', color : 'white'}}>
             Join
           </button>
         </form>

@@ -15,6 +15,7 @@
   font-size: 36px;
   font-weight: 600;
   text-align: center;
+  color: #522b07;
 }
 
 .wrapper .input-box{
@@ -69,7 +70,7 @@
 }
 
 .register-link .font{
-  color: #fff;
+  color: #522b07;
   text-decoration: none;
   font-weight: 600;
   margin-left: 5px;
@@ -78,36 +79,36 @@
 .register-link .font:hover{
   text-decoration: underline;
 }
-  
-  .btn--form {
-    background-color: #f48982;
-    color: #fdf2e9;
-    align-self: end;
-    padding: 8px;
-  }
-  
-  .btn,
-  .btn:link,
-  .btn:visited {
-    display: inline-block;
-    text-decoration: none;
-    font-size: 20px;
-    font-weight: 600;
-    border-radius: 9px;
-    border: none;
-  
-    cursor: pointer;
-    font-family: inherit;
-  
-    transition: all 0.3s;
-  }
-  
-  .btn-login:hover {
-    outline: 1px solid #f48982;
-  }
-  
-  .btn--form:hover {
-    background-color: #fdf2e9;
-    color: #f48982;
-  }
+
+.btn--form {
+  background-color: #f48982;
+  color: #fdf2e9;
+  align-self: end;
+  padding: 8px;
+}
+
+.btn,
+.btn:link,
+.btn:visited {
+  display: inline-block;
+  text-decoration: none;
+  font-size: 20px;
+  font-weight: 600;
+  border-radius: 9px;
+  border: none;
+
+  cursor: pointer;
+  font-family: inherit;
+
+  transition: all 0.3s;
+}
+
+.btn-login:hover {
+  outline: 1px solid #f48982;
+}
+
+.btn--form:hover {
+  background-color: #fdf2e9;
+  color: #f48982;
+}
   

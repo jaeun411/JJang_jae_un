@@ -4,31 +4,32 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import LoginContextProvider from './contexts/LoginContextProvider';
-import About from './pages/About';
 import Home from './pages/Home';
 import Join from './pages/Join';
 import Login from './pages/Login';
-import User from './pages/User';
-import Admin from './pages/Admin';
+import UserPage from './pages/UserPage';
 import File from './pages/File';
-import SnowEffect from './SnowEffect'; // SnowEffect 컴포넌트를 import 합니다.
+import SnowEffect from './SnowEffect';
+import {BrowserView, MobileView} from "react-device-detect"; // SnowEffect 컴포넌트를 import 합니다.
+//import { BrowserView, MobileView } from 'react-device-detect'
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <LoginContextProvider>
-        <SnowEffect /> {/* 모든 페이지에 눈내리는 효과를 추가합니다. */}
-        <Routes>
-          <Route path="/home" element={<Home />} />
-          <Route path="/" element={<Login />} />
-          <Route path="/join" element={<Join />} />
-          <Route path="/user" element={<User />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/admin" element={<Admin />} />
-          <Route path="/FileUpload" element={<File />}/>
-        </Routes>
-      </LoginContextProvider>
-    </BrowserRouter>
+      <BrowserRouter>                {/* URL 관리, 브라우저의 주소를 처리 */}
+        <LoginContextProvider>       {/* 로그인 관리 */}
+          <Routes>                   {/* 어떤 컴포넌트를 렌더링할지 결정하는 역할 */}
+            <Route path="/home" element={<Home/>}/>
+            <Route path="/" element={<Login/>}/>
+            <Route path="/join" element={<Join/>}/>
+            <Route path="/FileUpload" element={<File/>}/>
+            <Route path="/guest/" element={<UserPage/>}/>
+          </Routes>
+        </LoginContextProvider>
+        <div className="App">
+          <BrowserView/>
+          <MobileView/>
+        </div>
+      </BrowserRouter>
   );
 };
 

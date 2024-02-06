@@ -3,8 +3,11 @@ header {
     justify-content: space-between;
     align-items: center;
     padding: 20px;
-    border-bottom: 1px solid #2196F3;
     margin-bottom: 20px;
+}
+
+.ico-container {
+    align-items: flex-start;
 }
 
 .menu-list {
@@ -37,5 +40,6 @@ header {
 }
 
 .font {
-    color: lightskyblue;
+    color: #522b07;
+    font-weight: bold;
 }

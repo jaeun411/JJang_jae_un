@@ -99,13 +99,11 @@ const UploadModal = ({ isOpen, closeModal }) => {
                  });
             })
                  .then(response => {
-
                         if (response.status === 200) { // 서버에서 success 키를 반환하는지 확인해주세요
                             Swal.alert("3D 전환에 성공했습니다.", "사이드 바를 확인해주세요", "success");  // alert를 띄움;
                         } else {
                             Swal.alert("3D 전환에 실패했습니다.", "다시 시도 해주세요.", "warning");  // alert를 띄움
                         }
-
                  })
             closeModal();
         } catch (error) {
@@ -152,7 +150,7 @@ const UploadModal = ({ isOpen, closeModal }) => {
                 <button onClick={closeModal} className='btn btn-primary btn-x'><IoClose/></button>
                 <br/>
                 <br/>
-                <h3>뭘 적으면 좋을까...</h3>
+                <h3> 파일 업로드</h3>
                 <div >
                     <label>건물 이름:</label>
                     <input
