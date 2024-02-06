@@ -22,6 +22,7 @@
   width: 100%;
   height: 50px;
   margin: 30px 0;
+  color: #522b07;
 }
 
 .input-box input{
@@ -66,10 +67,11 @@
   text-align: center;
   margin-top: 20px;
   font-size: 15px;
+  color: #522b07;
 }
 
 .register-link .font{
-  color: #fff;
+  color: #522b07;
   text-decoration: none;
   font-weight: 600;
   margin-left: 5px;
@@ -130,7 +132,7 @@
 
 /* 토글 버튼 상태에 따른 배경색 변경 */
 .toggle-btn input:checked + .slider {
-  background-color: #2196F3;
+  background-color: #522b07;
 }
 
 /* 토글 버튼 둥근 원형 슬라이더 */

@@ -21,7 +21,7 @@ const Header = ({setGltfBlobUrl, setJsonData, setBuildingId, setFloorNum}) => {
 
           <div className="logo">
               <Link to="/home">
-                <img src= "/img/logo.jpg" alt="logo" className='logo' />
+                  <img src="/img/logo2.png" alt="logo" className='logo'/>
               </Link>
           </div>
 

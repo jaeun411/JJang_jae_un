@@ -5,17 +5,18 @@ import './LoginForm.css';
 import IdForm from "../Id/IdForm";
 import PwForm from "../Pw/Pw";
 import { FaUser, FaLock } from "react-icons/fa";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 const LoginForm = () => {
 
   const { login } = useContext(LoginContext);
+  const navigate = useNavigate()
   const [rememberUserId, setRememberUserId] = useState();
-  const [isFormVisible, setIsFormVisible] = useState(false);
 
-  const handleLabelClick = () => {
-    setIsFormVisible(!isFormVisible);
-  };
+
+  const onJoin = () => {
+    navigate("/join")
+  }
 
   const onLogin = (e) => {
     e.preventDefault()
@@ -44,7 +45,7 @@ const LoginForm = () => {
             <input
                 id="username"
                 type="text"
-                placeholder="Userid"
+                placeholder="UserId"
                 name="username"
                 autoComplete='username'
                 required
@@ -74,21 +75,21 @@ const LoginForm = () => {
                 }
                 <span className="slider"></span>
               </label>
-              <div style={{ display: 'flex', flexDirection: 'row' }}>
+              <div style={{ display: 'flex', flexDirection: 'row', color : '#7a573e' }}>
                 <label htmlFor='remember-id' className='check-label'>아이디 저장 |</label>
                 <IdForm />
                 <PwForm />
               </div>
             </div>
           </div>
-          <button value="Login">
+          <button value="Login" style={{background : '#7a573e', color : 'white'}}>
             Login
           </button>
           <div className="register-link">
             계정이 없으신가요?
-            <Link to="/join">
-              <li className="font" style={{display: 'inline'}}>회원가입</li>
-            </Link>
+            <button onClick={onJoin} style={{background: 'lightgray', color: 'black'}}>
+              Join
+            </button>
           </div>
         </form>
       </div>

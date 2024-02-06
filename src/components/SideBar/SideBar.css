@@ -17,25 +17,21 @@
     color: #4f4d4d;
     font-size: 23px;
     border: none;
-    background-color: white;
-    margin-right: -40px;
+    background-color: #fdf6de;
+    margin-left: 25%;
     margin-bottom: 2px;
 }
 {/* background-color: #fdf2e9;*/}
 
-.buttonStyle {
-    background-color: skyblue;
-    color: white;
-    font-size: 20px;
-}
 
 .buttonStyle1 {
-    background-color: white;
-    color: grey;
+    background-color: #fdf6de;
+    color: #522b07;
     font-size: 17px;
     position : absolute;
     bottom : 0;
     right : 6%;
+    font-weight: bold;
 }
 
 .dropDownItemTitleStyle {
@@ -49,4 +45,15 @@
     justify-content: space-between;
     background-color: white;
     align-items: center;
+}
+
+.itemBtnStyle {
+    background-color: transparent;
+    color: #522b07;
+    border: 2px solid #522b07;
+    border-radius: 10px;
+    width: 90px;
+    height: 35px;
+    font-size: 18px;
+    font-weight: bold;
 }

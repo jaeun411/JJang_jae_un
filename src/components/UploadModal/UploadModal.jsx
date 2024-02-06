@@ -150,7 +150,7 @@ const UploadModal = ({ isOpen, closeModal }) => {
                 <button onClick={closeModal} className='btn btn-primary btn-x'><IoClose/></button>
                 <br/>
                 <br/>
-                <h3>뭘 적으면 좋을까...</h3>
+                <h3> 파일 업로드</h3>
                 <div >
                     <label>건물 이름:</label>
                     <input

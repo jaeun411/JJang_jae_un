@@ -201,12 +201,13 @@ function SideBar({setGltfBlobUrl, setJsonData, setBuildingId, setFloorNum}) {
                         >
                             {!isLogin ?
                                 <>
-                                    <Offcanvas.Header closeButton>
+                                    <Offcanvas.Header closeButton style={{backgroundColor : '#fdf6de'}}>
                                         <Offcanvas.Title id="offcanvasNavbarLabel-expand-lg" style={{fontSize: '23px'}}>
                                             <div>
                                                 <button onClick={handleButtonClick} style={{
                                                     border: "none",
-                                                    backgroundColor: "#fdf2e9",
+                                                    backgroundColor: "#fdf6de",
+                                                    color : 'red',
                                                     fontSize: '23px'
                                                 }}>
                                                     <li className="font2" style={{display: 'inline'}}>로그인</li>
@@ -216,16 +217,16 @@ function SideBar({setGltfBlobUrl, setJsonData, setBuildingId, setFloorNum}) {
                                         </Offcanvas.Title>
                                     </Offcanvas.Header>
 
-                                    <Offcanvas.Body>
+                                    <Offcanvas.Body style={{backgroundColor : '#fdf6de'}}>
                                         <Nav className="flex-grow-1 pe-3">
-                                            <Button onClick={handleClick}>
+                                            <Button style={{backgroundColor : '#7a573e', color : 'white'}} onClick={handleClick}>
                                                 파일 추가하기
                                             </Button>
                                             <NavDropdown
                                                 title="3D 목록"
                                                 id="offcanvasNavbarDropdown-expand-lg"
                                             >
-                                                <NavDropdown.Item onClick={handleClick}>
+                                                <NavDropdown.Item onClick={handleClick} style={{color : 'red'}}>
                                                     로그인이 필요합니다.
                                                 </NavDropdown.Item>
                                             </NavDropdown>
@@ -234,20 +235,20 @@ function SideBar({setGltfBlobUrl, setJsonData, setBuildingId, setFloorNum}) {
                                 </>
                                 :
                                 <>
-                                    <Offcanvas.Header closeButton>
+                                    <Offcanvas.Header closeButton style={{backgroundColor : '#fdf6de'}}>
                                         <Offcanvas.Title id="offcanvasNavbarLabel-expand-lg" style={{fontSize : '23px'}}>
-                                            <span style={{color: 'blue'}}>
+                                            <span style={{color: '#7a573e'}}>
                                                 <IoPersonSharp/> {userInfo.userId}
                                             </span>님 환영합니다
                                         </Offcanvas.Title>
                                         <button className='refresh' onClick={fetchBuildings}><IoRefresh className='refresh' /></button>
                                     </Offcanvas.Header>
 
-                                    <Offcanvas.Body>
+                                    <Offcanvas.Body style={{backgroundColor : '#fdf6de'}}>
                                         <Nav className="flex-grow-1 pe-3">
                                             <div>
                                                 <UploadModal isOpen={modalIsOpen} closeModal={closeModal}/>
-                                                <Button className='buttonStyle1' onClick={openModal}>
+                                                <Button style={{backgroundColor : '#7a573e', color : 'white'}} onClick={openModal}>
                                                     파일 추가하기
                                                 </Button>
                                             </div>

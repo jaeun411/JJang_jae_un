@@ -48,7 +48,7 @@ const CreateCode = ({buildingId, setOffcanvas}) => {
     return (
         <div>
             {/* QR 코드 생성 버튼 */}
-            <Button onClick={generateQRCode}>QR생성</Button>
+            <button className='itemBtnStyle' onClick={generateQRCode}>QR생성</button>
             <Modal show={modalIsOpen} onHide={closeModal}
                    style={{
                        width: '15%', // 원하는 너비를 설정합니다.
