@@ -22,6 +22,7 @@ const App = () => {
             <Route path="/" element={<Login/>}/>
             <Route path="/join" element={<Join/>}/>
             <Route path="/FileUpload" element={<File/>}/>
+
             <Route path="/guest/" element={<UserPage/>}/>
           </Routes>
         </LoginContextProvider>
