@@ -24,6 +24,15 @@ function SideBar({setGltfBlobUrl, setJsonData, setBuildingId, setFloorNum}) {
 
     const [buildings, setBuildings] = useState([]);
     const [floors, setFloors] = useState([]);
+    const [modelUrl, setModelUrl] = useState(null);
+    const [buildingId, setBuildingId] = useState(null);
+    const [floorNum, setFloorNum] = useState(null);
+    const [offcanvas, setOffcanvas] = useState(false);
+
+    const [buildingData, setbuildingData] = useState({
+        buildingName: '',
+        floorCount: 0
+    });
 
     const [offcanvas, setOffcanvas] = useState(false);
 
@@ -47,7 +56,6 @@ function SideBar({setGltfBlobUrl, setJsonData, setBuildingId, setFloorNum}) {
         setModalIsOpen(false);
     };
 
-
     const handleClick = () => {
         Swal.alert("로그인이 필요합니다", "로그인 화면으로 이동합니다.", "warning", () => {
             navigate("/");
@@ -64,6 +72,7 @@ function SideBar({setGltfBlobUrl, setJsonData, setBuildingId, setFloorNum}) {
     /**
      * 로그인이 되어있을 때, 건물 리스트를 받아온다.
      */
+
     useEffect(() => {
         if (isLogin) {
             auth.list()
@@ -106,6 +115,7 @@ function SideBar({setGltfBlobUrl, setJsonData, setBuildingId, setFloorNum}) {
     /**
      * 해당 건물의 층의 정보를 얻어온다(층정보, 수정날짜)
      */
+
     const fetchFloors = (buildingId) => {
         axios.get(`/file/${buildingId}/list`)
             .then(response => {
@@ -115,7 +125,69 @@ function SideBar({setGltfBlobUrl, setJsonData, setBuildingId, setFloorNum}) {
                 console.error('There was an error!', error);
             });
     };
+    //건물 glb파일
+    const fetchBuilding = (buildingId) => {
+        console.log(buildingId);
+        const url = `/file/${buildingId}`;
+        
+        axios.get(url, { responseType: 'blob' }) // Blob 형태로 받아옵니다.
+            .then(response => {
+                console.log(response);
+                const blob = response.data;
+                const blobUrl = URL.createObjectURL(blob); // Blob URL을 생성합니다.
+                setGltfBlobUrl(blobUrl); // Blob URL을 상태로 저장합니다.
+                
+            })
+            .catch(error => {
+                console.error('There was an error!', error);
+            });
+    };
 
+    const handlesClick = (buildingId) => {
+        fetchFloors(buildingId);
+        // fetchBuilding(buildingId);
+    };
+
+
+    //빌딩id,층수를 넘겨주면, 3D 도면 glb파일
+    const fetchModel = (buildingId, floor) => {
+        //floor에 데이터가 null이 아닐 때만 실행
+        if(floor.null==false)
+        {
+            const url = `/file/${buildingId}/${floor.floorNum}`;
+            axios.get(url) // Blob 형태로 받아옵니다.
+            // { responseType: 'blob' }
+            .then(response => {
+                const floorFileData = response.data.floorFileData;
+                const metaData = response.data.metaData;
+
+                const decodedString = atob(metaData);
+                const utf8Decoder = new TextDecoder('utf-8');
+                const jsonData = utf8Decoder.decode(new Uint8Array(decodedString.split('').map(char => char.charCodeAt(0))));
+
+                //console.log(objectJson);
+
+                // floorFileData를 base64 디코딩하여 Blob 생성
+                const byteCharacters = atob(floorFileData);
+                const byteNumbers = new Array(byteCharacters.length);
+                for (let i = 0; i < byteCharacters.length; i++) {
+                  byteNumbers[i] = byteCharacters.charCodeAt(i);
+                }
+                const byteArray = new Uint8Array(byteNumbers);
+                const blob = new Blob([byteArray], { type: 'application/octet-stream' });
+
+
+                const blobUrl = URL.createObjectURL(blob); // Blob URL을 생성합니다.
+                setGltfBlobUrl(blobUrl); // Blob URL을 상태로 저장합니다.
+                setJsonData(jsonData);
+                setBuildingId(buildingId);
+                setFloorNum(floor.floorNum);
+            })
+            .catch(error => {
+                console.error('There was an error!', error);
+            });
+        }
+    };
 
 
     /**
@@ -198,6 +270,7 @@ function SideBar({setGltfBlobUrl, setJsonData, setBuildingId, setFloorNum}) {
                                           id="offcanvasNavbar-expand-lg"
                                           aria-labelledby="offcanvasNavbarLabel-expand-lg"
                                           placement="start"
+
                         >
                             {!isLogin ?
                                 <>
@@ -242,6 +315,7 @@ function SideBar({setGltfBlobUrl, setJsonData, setBuildingId, setFloorNum}) {
                                             </span>님 환영합니다
                                         </Offcanvas.Title>
                                         <button className='refresh' onClick={fetchBuildings}><IoRefresh className='refresh' /></button>
+
                                     </Offcanvas.Header>
 
                                     <Offcanvas.Body style={{backgroundColor : '#fdf6de'}}>
@@ -258,6 +332,7 @@ function SideBar({setGltfBlobUrl, setJsonData, setBuildingId, setFloorNum}) {
                                             {buildings.map((building, index) =>
                                                 <NavDropdown
                                                     className='dropDownItemTitleStyle'
+
                                                     key={index}
                                                     title={building.buildingName}
                                                     id={`offcanvasNavbarDropdown-${building.buildingId}`}
@@ -267,6 +342,7 @@ function SideBar({setGltfBlobUrl, setJsonData, setBuildingId, setFloorNum}) {
                                                         <Button onClick={()=> fetchBuilding(building.buildingId)}>건물 도면</Button>
                                                         <CreateCode buildingId={building.buildingId} setOffcanvas={setOffcanvas}/>
                                                     </NavDropdown.Item>
+
 
                                                     {/* 해당 건물을 눌렀을 때 뜨는  층정보*/}
                                                     {floors.map((floor, index) =>
@@ -285,9 +361,12 @@ function SideBar({setGltfBlobUrl, setJsonData, setBuildingId, setFloorNum}) {
                                                                     )
                                                                 }
                                                             </NavDropdown.Item>
+
                                                         </NavDropdown.Item>
                                                     )}
+                                                   
                                                 </NavDropdown>
+                                                
                                             )}
                                         </Nav>
                                     </Offcanvas.Body>

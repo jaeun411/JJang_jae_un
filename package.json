@@ -28,7 +28,7 @@
     "react-scripts": "^5.0.1",
     "react-three-fiber": "^6.0.13",
     "startbootstrap-simple-sidebar": "^6.0.6",
-    "sweetalert2": "^11.10.1",
+    "sweetalert2": "^11.10.4",
     "sweetalert2-react-content": "^5.0.7",
     "three": "^0.160.1",
     "web-vitals": "^2.1.4"

@@ -12,6 +12,7 @@ import * as Swal from "../../apis/alert";
 
 // 3D 모델을 렌더링하는 Model 컴포넌트
 const Model = ({ url,onObjectClick, setnewgltf, setText, setModifiedObjects }) => {
+
     const [gltf, setGltf] = useState(null);
     const meshRef = useRef();
     const { camera } = useThree();
@@ -34,6 +35,7 @@ const Model = ({ url,onObjectClick, setnewgltf, setText, setModifiedObjects }) =
             return;
         }
         const handleClick = (event) => {
+
             const raycaster = new THREE.Raycaster();
             const mouse = new THREE.Vector2(
                 (event.clientX / window.innerWidth) * 2 - 1,
@@ -48,6 +50,7 @@ const Model = ({ url,onObjectClick, setnewgltf, setText, setModifiedObjects }) =
                     ...prevObjects,
                     [intersects[0].object.uuid]: intersects[0].object
                 }));
+
             }
         };
 
@@ -60,12 +63,14 @@ const Model = ({ url,onObjectClick, setnewgltf, setText, setModifiedObjects }) =
     }, [onObjectClick, setModifiedObjects, camera, meshRef]);
 
     // 렌더링
+
     return gltf ? (
         <group
             ref={meshRef}
             onClick={(event) => {
                 event.stopPropagation();
                 onObjectClick(event.object);
+
             }}
         >
             <primitive object={gltf} scale={0.01}/>
@@ -197,6 +202,7 @@ const ObjectDetailsForm = ({ objectDetails, setObjectDetails, onSubmit, onCancel
                 {/* 저장 및 취소 버튼 */}
                 <div className="button-container">
                     <button className="btn btn-primary btn-layer-1_1" onClick={onSubmit} style={{marginRight: '10px'}}>
+
                         저장
                         <FontAwesomeIcon icon={faCheck}/>
                     </button>
@@ -204,6 +210,7 @@ const ObjectDetailsForm = ({ objectDetails, setObjectDetails, onSubmit, onCancel
                         취소
                         <FontAwesomeIcon icon={faTimes}/>
                     </button>
+
                 </div>
             </div>
         </div>
@@ -215,6 +222,7 @@ const ThreeJs = ({gltfBlobUrl, buildingId, floorNum, jsonData }) => {
     const [labels, setLabels] = useState({});
     //이걸로 건물 정보 입력 모달 상태 관리(true 열림, false 닫힘)
     const [showDetailsForm, setShowDetailsForm] = useState(false);
+
     //메타 데이터 관리
     const [objectDetails, setObjectDetails] = useState({ name: ''});
     //선택된 오브젝트 관리
@@ -229,6 +237,7 @@ const ThreeJs = ({gltfBlobUrl, buildingId, floorNum, jsonData }) => {
     }, [jsonData]);
 
     // 오브젝트 클릭 핸들러
+
     const handleObjectClick = (object) => {
         setSelectedObject(object);
         setShowDetailsForm(true);
@@ -253,6 +262,7 @@ const ThreeJs = ({gltfBlobUrl, buildingId, floorNum, jsonData }) => {
         }
 
         console.log('Selected Object UUID:', object.name);
+
     };
 
     //오브젝트 정보와 라벨 정보를 넘겨서 띄워준다
@@ -314,6 +324,7 @@ const ThreeJs = ({gltfBlobUrl, buildingId, floorNum, jsonData }) => {
 
     const objects = [];
 
+
     //모델에서 받아온 scene으로 json 파일의 데이터를 넣는다
     const setnewgltf = (newgltf) => {
         setLabels({});
@@ -322,6 +333,7 @@ const ThreeJs = ({gltfBlobUrl, buildingId, floorNum, jsonData }) => {
     };
 
     useEffect(()=>{
+
         setLabels({});
         if(gltf)
         {
@@ -436,6 +448,7 @@ const ThreeJs = ({gltfBlobUrl, buildingId, floorNum, jsonData }) => {
                                            setModifiedObjects={setModifiedObjects} setnewgltf={setnewgltf} setText={setText}/>}
                     {/* 라벨 렌더링 */}
                     {Object.entries(labels).map(([uuid, label]) => (
+
                         <Text key={uuid}
                               position={label.position}
                               fontSize={label.fontSize}
@@ -445,6 +458,7 @@ const ThreeJs = ({gltfBlobUrl, buildingId, floorNum, jsonData }) => {
                               rotation={label.rotation}
                               //한글 폰트 추가
                               font={'https://fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Bold.woff'}
+
                         >
                             {label.text}
                         </Text>
@@ -452,6 +466,7 @@ const ThreeJs = ({gltfBlobUrl, buildingId, floorNum, jsonData }) => {
                 </Canvas>
             </div>
             {/* 세부 정보 폼 렌더링 */}
+
             {showDetailsForm && (
                 <ObjectDetailsForm
                     objectDetails={objectDetails}
@@ -464,8 +479,10 @@ const ThreeJs = ({gltfBlobUrl, buildingId, floorNum, jsonData }) => {
             )}
             {/* JSON 다운로드 버튼 */}
             <button onClick={handleDownloadJson}>Download JSON</button>
+
         </div>
     );
 };
+
 
 export default ThreeJs;
