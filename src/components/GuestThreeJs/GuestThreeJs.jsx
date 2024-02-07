@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import Draggable from 'react-draggable';
 import axios from "axios";
+import { MdOutlineKeyboardBackspace } from "react-icons/md";
 
 // 3D 모델을 렌더링하는 Model 컴포넌트
 const Model = ({ url,onObjectClick, setnewgltf, setModifiedObjects }) => {
@@ -408,25 +409,27 @@ const GuestThreeJs = ({ buildingId, floorNum, gltfBlobUrl: initialGltfBlobUrl, j
         setShowDetailsForm(false);
     };
 
-    // JSON 다운로드 핸들러
-    const handleDownloadJson = () => {
-        console.log('data:', jsonData)
-        // 데이터 객체를 JSON 문자열로 변환
-        const jsonDataString = JSON.stringify(jsonData, null, 2);
+    const fetchBuilding = (buildingId) => {
+        const url = `/guest/${buildingId}`;
+        axios.get(url, { responseType: 'blob' })
+            .then(response => {
+                const blob = response.data;
+                const blobUrl = URL.createObjectURL(blob);
+                setGltfBlobUrl(blobUrl);
+            })
+            .catch(error => {
+                console.error('There was an error!', error);
+            });
+    };
 
-        // JSON 문자열로 Blob 생성
-        const blob = new Blob([jsonDataString], { type: 'application/json' });
-
-        // 다운로드 링크 생성하고 클릭 이벤트 트리거
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = 'scene_data.json';
-        a.click();
+    const handleGoBack = () => {
+        fetchBuilding(buildingId);
     };
 
     // 렌더링
     return (
         <div style={{marginLeft: "20px"}}>
+            <button className='btn_back' onClick={handleGoBack}><MdOutlineKeyboardBackspace style={{fontSize : '25px', marginRight : '3px'}} />돌아가기</button>
             <div>
                 {/* 3D 캔버스 */}
                 <Canvas
@@ -436,7 +439,9 @@ const GuestThreeJs = ({ buildingId, floorNum, gltfBlobUrl: initialGltfBlobUrl, j
                     <ambientLight intensity={1.0}/>
                     <pointLight position={[10, 10, 10]} intensity={1000}/>
                     {/* 모델 렌더링 */}
-                    {gltfBlobUrl && <Model url={gltfBlobUrl} onObjectClick={handleObjectClick} setModifiedObjects={setModifiedObjects} setnewgltf={setnewgltf} setText={setText}/>}
+                    {gltfBlobUrl && <Model url={gltfBlobUrl} onObjectClick={handleObjectClick}
+                                           setModifiedObjects={setModifiedObjects} setnewgltf={setnewgltf}
+                                           setText={setText}/>}
                     {/* 라벨 렌더링 */}
                     {Object.entries(labels).map(([uuid, label]) => (
                         <Text key={uuid}
@@ -465,8 +470,6 @@ const GuestThreeJs = ({ buildingId, floorNum, gltfBlobUrl: initialGltfBlobUrl, j
                     selectedObject={selectedObject}
                 />
             )}
-            {/* JSON 다운로드 버튼 */}
-            <button onClick={handleDownloadJson}>Download JSON</button>
         </div>
     );
 };

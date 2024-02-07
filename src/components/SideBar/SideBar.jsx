@@ -93,8 +93,6 @@ function SideBar({setGltfBlobUrl, setJsonData, setBuildingId, setFloorNum}) {
         }
     };
 
-
-
     /**
      * 층 드롭다운 클릭시 해당 건물의 층 정보를 받아온다.
      * @param buildingId

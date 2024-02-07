@@ -18,8 +18,8 @@ const UserPage = () => {
 
     return (
         <>
-            <GuestSideBar buildingId={buildingId} setBuildingId={setBuildingId} setGltfBlobUrl={setGltfBlobUrl} setJsonData={setJsonData}/>
-            <div >
+            <div>
+                <GuestSideBar buildingId={buildingId} setBuildingId={setBuildingId} setGltfBlobUrl={setGltfBlobUrl} setJsonData={setJsonData}/>
                 <GuestThreeJs gltfBlobUrl={gltfBlobUrl} jsonData={jsonData} buildingId={buildingId}/>
             </div>
         </>
