@@ -67,7 +67,7 @@ function GuestSideBar({buildingId, setGltfBlobUrl, setJsonData}){
         //floor에 데이터가 null이 아닐 때만 실행
         if(floor.null===false)
         {
-            const url = `/file/${buildingId}/${floor.floorNum}`;
+            const url = `/guest/${buildingId}/${floor.floorNum}`;
             axios.get(url) // Blob 형태로 받아옵니다.
                 // { responseType: 'blob' }
                 .then(response => {

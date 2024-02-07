@@ -266,8 +266,9 @@ const ThreeJs = ({gltfBlobUrl, buildingId, floorNum, jsonData }) => {
                 }));
             }
         }
-
-        console.log('Selected Object UUID:', object.name);
+        const str = object.name;
+        const str2 = str.split('_');
+        console.log('Selected Object UUID:', str2);
     };
 
     //오브젝트 정보와 라벨 정보를 넘겨서 띄워준다

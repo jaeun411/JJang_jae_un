@@ -8,6 +8,7 @@ import "../ThreeJs/ThreeJs.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import Draggable from 'react-draggable';
+import axios from "axios";
 
 // 3D 모델을 렌더링하는 Model 컴포넌트
 const Model = ({ url,onObjectClick, setnewgltf, setModifiedObjects }) => {
@@ -23,7 +24,6 @@ const Model = ({ url,onObjectClick, setnewgltf, setModifiedObjects }) => {
         loader.load(url, (gltf) => {
             setGltf(gltf.scene);
             setnewgltf(gltf.scene)
-
         });
     }, [url]);
 
@@ -204,7 +204,7 @@ const ObjectDetailsForm = ({ objectDetails, setObjectDetails, onSubmit, onCancel
 };
 
 // ThreeJs 컴포넌트
-const GuestThreeJs = ({gltfBlobUrl, buildingId, floorNum, jsonData }) => {
+const GuestThreeJs = ({ buildingId, floorNum, gltfBlobUrl: initialGltfBlobUrl, jsonData: initialJsonData }) => {
     const [labels, setLabels] = useState({});
     //이걸로 건물 정보 입력 모달 상태 관리(true 열림, false 닫힘)
     const [showDetailsForm, setShowDetailsForm] = useState(false);
@@ -215,11 +215,18 @@ const GuestThreeJs = ({gltfBlobUrl, buildingId, floorNum, jsonData }) => {
     const [modifiedObjects, setModifiedObjects] = useState({});
     const [gltf, setGltf] = useState(null);
     const [data, setData] = useState({});
+    const [gltfBlobUrl, setGltfBlobUrl] = useState(initialGltfBlobUrl);
+    const [jsonData, setJsonData] = useState(initialJsonData);
 
     // 초기에 JSON 데이터 설정
     useEffect(() => {
-        setData(jsonData);
-    }, [jsonData]);
+        setGltfBlobUrl(initialGltfBlobUrl);
+    }, [initialGltfBlobUrl]);
+
+    // 초기에 JSON 데이터 설정
+    useEffect(() => {
+        setData(initialJsonData);
+    }, [initialJsonData]);
 
     // 오브젝트 클릭 핸들러
     const handleObjectClick = (object) => {
@@ -232,8 +239,56 @@ const GuestThreeJs = ({gltfBlobUrl, buildingId, floorNum, jsonData }) => {
             name: objectLabels?.text || object.name || '',
         });
 
-        console.log('Selected Object UUID:', object.name);
-    };
+        // Check if object.name exists in jsonData before accessing it
+        if (jsonData && jsonData[object.name]) {
+            const clickedObjectData = jsonData[object.name];
+
+            if (clickedObjectData) {
+                setObjectDetails((prevDetails) => ({
+                    ...prevDetails,
+                    roomName: clickedObjectData.roomName || '',
+                    info: Object.entries(clickedObjectData.info || {}).map(([key, value]) => ({ key, value }))
+                }));
+            }
+        }
+
+        // str2가 숫자인 경우에 추가적인 작업 실행
+        const str = object.name;
+        const str2 = str.split('_');
+
+        if (!isNaN(parseInt(str2[0]))) {
+            const url = `/guest/${buildingId}/${str2[0]}`;
+            axios.get(url) // Blob 형태로 받아옵니다.
+                // { responseType: 'blob' }
+                .then(response => {
+                    const floorFileData = response.data.floorFileData;
+                    const metaData = response.data.metaData;
+
+                    const decodedString = atob(metaData);
+                    const utf8Decoder = new TextDecoder('utf-8');
+                    const jsonString = utf8Decoder.decode(new Uint8Array(decodedString.split('').map(char => char.charCodeAt(0))));
+                    const newJsonData = JSON.parse(jsonString);
+                    setJsonData(newJsonData);
+
+                    console.log('jsonData:', jsonData); // 여기에 jsonData를 콘솔에 출력합니다.
+
+                    // floorFileData를 base64 디코딩하여 Blob 생성
+                    const byteCharacters = atob(floorFileData);
+                    const byteNumbers = new Array(byteCharacters.length);
+                    for (let i = 0; i < byteCharacters.length; i++) {
+                        byteNumbers[i] = byteCharacters.charCodeAt(i);
+                    }
+                    const byteArray = new Uint8Array(byteNumbers);
+                    const blob = new Blob([byteArray], { type: 'application/octet-stream' });
+
+                    const blobUrl = URL.createObjectURL(blob); // Blob URL을 생성합니다.
+                    setGltfBlobUrl(blobUrl); // Blob URL을 상태로 저장합니다.
+                })
+                .catch(error => {
+                    console.error('There was an error!', error);
+                });
+        }
+    }
 
     //오브젝트 정보와 라벨 정보를 넘겨서 띄워준다
     const setText = (objectss) => {
@@ -381,8 +436,7 @@ const GuestThreeJs = ({gltfBlobUrl, buildingId, floorNum, jsonData }) => {
                     <ambientLight intensity={1.0}/>
                     <pointLight position={[10, 10, 10]} intensity={1000}/>
                     {/* 모델 렌더링 */}
-                    {gltfBlobUrl && <Model url={gltfBlobUrl} onObjectClick={handleObjectClick}
-                                           setModifiedObjects={setModifiedObjects} setnewgltf={setnewgltf} setText={setText}/>}
+                    {gltfBlobUrl && <Model url={gltfBlobUrl} onObjectClick={handleObjectClick} setModifiedObjects={setModifiedObjects} setnewgltf={setnewgltf} setText={setText}/>}
                     {/* 라벨 렌더링 */}
                     {Object.entries(labels).map(([uuid, label]) => (
                         <Text key={uuid}
@@ -392,6 +446,8 @@ const GuestThreeJs = ({gltfBlobUrl, buildingId, floorNum, jsonData }) => {
                               anchorX="center"
                               anchorY="middle"
                               rotation={label.rotation}
+                            //한글 폰트 추가
+                              font={'https://fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Bold.woff'}
                         >
                             {label.text}
                         </Text>

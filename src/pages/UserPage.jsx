@@ -20,7 +20,7 @@ const UserPage = () => {
         <>
             <GuestSideBar buildingId={buildingId} setBuildingId={setBuildingId} setGltfBlobUrl={setGltfBlobUrl} setJsonData={setJsonData}/>
             <div >
-                <GuestThreeJs gltfBlobUrl={gltfBlobUrl} jsonData={jsonData}/>
+                <GuestThreeJs gltfBlobUrl={gltfBlobUrl} jsonData={jsonData} buildingId={buildingId}/>
             </div>
         </>
     );
