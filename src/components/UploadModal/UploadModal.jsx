@@ -18,11 +18,12 @@ const customStyles = {
         marginRight: '-50%',
         transform: 'translate(-50%, -50%)',
         background: 'transparent',
-        border: '2px solid rgba(255, 255, 255, .2)',
+        border: '5px solid #522b07',
         backdropFilter: 'blur(30px)',
-        color: '#3c96ef',
+        color: '#522b07',
         borderRadius: '10px',
         boxShadow: '0 0 10px rgba(0, 0, 0, .2)',
+        fontWeight: 'bold'
     },
 };
 
@@ -134,7 +135,7 @@ const UploadModal = ({ isOpen, closeModal }) => {
         padding: '9px',   // 더 나은 모양을 위해 패딩 추가
         backgroundColor: '#E0FFFF',
         borderRadius: '10px',
-        boxShadow: '0 0 10px rgba(0, 0, 0, .2)',
+        boxShadow: '0 0 10px rgba(0, 0, 0, .6)',
         background: 'transparent',
         border: '2px solid rgba(255, 255, 255, .2)',
         backdropFilter: 'blur(30px)',
@@ -149,20 +150,22 @@ const UploadModal = ({ isOpen, closeModal }) => {
             contentLabel="File Upload Modal"
         >
             <div style={{position: 'relative'}}>
-                <button onClick={closeModal} className='btn btn-primary btn-x'><IoClose/></button>
+                <button onClick={closeModal} className='btn-x'><IoClose/></button>
                 <br/>
                 <br/>
-                <h3>뭘 적으면 좋을까...</h3>
+                <h3 style={{fontWeight : 'bold', fontSize : '30px'}}>새 파일 업로드</h3>
+                <br/>
                 <div >
-                    <label>건물 이름:</label>
+                    <label style={{fontSize : '20px'}}>건물 이름:</label>
                     <input
                         type="text"
                         value={buildingDetails.buildingName}
                         placeholder="생성할 건물 이름 입력"
                         className="building_name"
                         onChange={handleBuildingNameChange}
+                        style={{border: '1.5px solid #522b07'}}
                     />
-                    <label>전체 층수:</label>
+                    <label style={{fontSize : '20px'}}>전체 층수:</label>
                     <input
                         type="text"
                         value={floorCount}
@@ -170,6 +173,7 @@ const UploadModal = ({ isOpen, closeModal }) => {
                         className="building_floor"
                         readOnly // 입력을 막음
                         onChange={handleBuildingFloorsChange}
+                        style={{border: '1.5px solid #522b07'}}
                     />
                 </div>
                 <br/>
@@ -186,7 +190,11 @@ const UploadModal = ({ isOpen, closeModal }) => {
                 </div>
                 <br/>
                 <div>
-                    <button onClick={handleFileUpload} className='btn btn-primary btn-send'>전송</button>
+                    <button
+                        onClick={handleFileUpload}
+                        className='btn-send_UploadModal'>
+                        전송
+                    </button>
                 </div>
             </div>
         </Modal>

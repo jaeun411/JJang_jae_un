@@ -220,7 +220,7 @@ function SideBar({setGltfBlobUrl, setJsonData, setBuildingId, setFloorNum}) {
 
                                     <Offcanvas.Body style={{backgroundColor : '#fdf6de'}}>
                                         <Nav className="flex-grow-1 pe-3">
-                                            <Button onClick={handleClick}>
+                                            <Button style={{backgroundColor : '#7a573e', color : 'white'}} onClick={handleClick}>
                                                 파일 추가하기
                                             </Button>
                                             <NavDropdown
@@ -247,14 +247,13 @@ function SideBar({setGltfBlobUrl, setJsonData, setBuildingId, setFloorNum}) {
 
                                     <Offcanvas.Body style={{backgroundColor : '#fdf6de'}}>
                                         <Nav className="flex-grow-1 pe-3">
-                                            <div>
-                                                <UploadModal isOpen={modalIsOpen} closeModal={closeModal}/>
-                                                <Button style={{backgroundColor : '#7a573e', color : 'white'}} onClick={openModal}>
-                                                    파일 추가하기
-                                                </Button>
-                                            </div>
 
-                                            {/* 여기가 건물 이름 리스트 뜨는 부분 */}
+                                        <UploadModal isOpen={modalIsOpen} closeModal={closeModal}/>
+                                        <Button style={{backgroundColor : '#7a573e', color : 'white'}} onClick={openModal}>
+                                            파일 추가하기
+                                        </Button>
+
+                                        {/* 여기가 건물 이름 리스트 뜨는 부분 */}
 
                                             {buildings.map((building, index) =>
                                                 <NavDropdown

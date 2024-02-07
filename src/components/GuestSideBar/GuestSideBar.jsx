@@ -123,7 +123,7 @@ function GuestSideBar({buildingId, setGltfBlobUrl, setJsonData}){
                             <Offcanvas.Header closeButton>
                                 <Offcanvas.Title id="offcanvasNavbarLabel-expand-lg" style={{fontSize: '23px'}}>
                                     <div>
-                                        환영합니다.
+                                        환영합니다
                                     </div>
                                 </Offcanvas.Title>
                             </Offcanvas.Header>

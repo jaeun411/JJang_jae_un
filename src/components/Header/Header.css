@@ -40,6 +40,7 @@ header {
 }
 
 .font {
+    font-size: 20px;
     color: #522b07;
     font-weight: bold;
 }

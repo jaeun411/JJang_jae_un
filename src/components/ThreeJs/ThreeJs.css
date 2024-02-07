@@ -2,7 +2,7 @@
 
 :root {
     --color-primary: #A099FB;
-    --color-primary-dark: #6C5CEA;
+    --color-primary-dark: #cea56d;
     --color-light: #fff;
     --color-dark: #444;
     --color-secondary-light: #FEB6D3;
@@ -30,46 +30,48 @@ body {
 .btn:focus {
     outline: none;
 }
-
 .btn-primary {
-    background: #fff;
-    color: #4f4d4d;
-}
-
-.btn-primary.btn-layer-1_1 i {
+    background: #af8b74;
+    color: #ffffff;
+    font-size: 19px;
     position: relative;
-    left: 30px;
     padding: inherit;
-    background-color: var(--color-primary-dark);
-    color: var(--color-primary);
     border-radius: 5px;
+    width: 70px;
+    height: 30px;
+    border: none;
 }
 
-/* BUTTON ROW 3 STYLE */
-.btn-primary.btn-layer-3_1 {
-    box-shadow: 0 0 12px rgba(var(--color-primary-dark), .33);
-}
-
-.btn-primary.btn-layer-3_1 i {
-    position: relative;
-    left: 30px;
-    padding: inherit;
-    background: var(--color-primary-dark);
-    color: var(--color-primary);
+.btn-primary1 {
+    background: #af8b74;
+    color: #ffffff;
     border-radius: 5px;
+    margin-left: 10px;
+    width: 40px;
+    height: 40px;
+    border: none;
 }
 
 .button-plus{
-    margin-left: 10px;
+    background: #af8b74;
+    color: #ffffff;
+    position: relative;
 }
 
+.labelStyle {
+    display: flex;
+    justify-content: center;
+    color: white;
+    border-radius: 5px;
+}
 
 .text_room {
-    width: 100%;
+    text-align: center;
+    width: 70%;
+    height: 20px;
     padding: 1.2rem;
     border-radius: 9px;
     border: none;
-    margin-bottom: 10px;
 }
 
 .text_key{
@@ -101,8 +103,15 @@ body {
     border: none
 }
 
-.btn-send{
-    margin-right: 10px;
+.btn-send_UploadModal{
+    background-color: #522b07;
+    width: 60px;
+    height: 45px;
+    color: white;
+    border-radius: 15px;
+    font-size: 18px;
+    border: none;
+    font-weight: bold;
 }
 
 

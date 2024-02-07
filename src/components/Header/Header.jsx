@@ -45,12 +45,12 @@ const Header = ({setGltfBlobUrl, setJsonData, setBuildingId, setFloorNum}) => {
                         <>
                             <li className="font">
                                 <span>
-                                    <IoPersonSharp style={{fontSize: '17px'}}/>
+                                    <IoPersonSharp style={{fontSize: '20px', marginRight : '3px'}}/>
                                     {userInfo.userId}
-                                </span>님 환영합니다.
+                                </span>님 환영합니다 |
                             </li>
                             <button className='link' onClick={() => logout()}>
-                                <li className="font" style={{fontSize: '16px'}}>로그아웃</li>
+                                <li className="font" style={{fontSize: '20px'}}>로그아웃</li>
                             </button>
                         </>
                     }

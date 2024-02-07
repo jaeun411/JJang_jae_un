@@ -8,6 +8,8 @@ import "./ThreeJs.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
 import axios from "axios";
+import Draggable from 'react-draggable';
+
 
 // 3D 모델을 렌더링하는 Model 컴포넌트
 const Model = ({ url,onObjectClick, setnewgltf, setText, setModifiedObjects }) => {
@@ -83,11 +85,19 @@ const ObjectDetailsForm = ({ objectDetails, setObjectDetails, onSubmit, onCancel
                 setObjectDetails((prevDetails) => ({
                     ...prevDetails,
                     roomName: clickedObjectData.roomName || '',
-                    info: Object.entries(clickedObjectData.info || {}).map(([key, value]) => ({ key, value }))
+                    info: Object.entries(clickedObjectData.info || {}).map(([key, value]) => ({key, value}))
                 }));
             }
         }
     };
+
+    const handleRemoveField = (index) => {
+        setObjectDetails((prevDetails) => ({
+            ...prevDetails,
+            info: prevDetails.info.filter((_, i) => i !== index)
+        }));
+    };
+
 
     // useEffect를 사용하여 선택된 오브젝트가 변경될 때 폼 필드 업데이트
     useEffect(() => {
@@ -105,7 +115,7 @@ const ObjectDetailsForm = ({ objectDetails, setObjectDetails, onSubmit, onCancel
             if (type === 'key') {
                 return {
                     ...prevDetails,
-                    info: newInfo.map((infoItem, i) => (i === index ? { ...infoItem, key: e.target.value } : infoItem))
+                    info: newInfo.map((infoItem, i) => (i === index ? {...infoItem, key: e.target.value} : infoItem))
                 };
             } else if (type === 'value') {
                 item.value = e.target.value;
@@ -124,7 +134,7 @@ const ObjectDetailsForm = ({ objectDetails, setObjectDetails, onSubmit, onCancel
             ...prevDetails,
             info: [
                 ...prevDetails.info,
-                { key: '' , value: '' }
+                {key: '', value: ''}
             ]
         }));
     };
@@ -139,68 +149,75 @@ const ObjectDetailsForm = ({ objectDetails, setObjectDetails, onSubmit, onCancel
 
     // 렌더링
     return (
-        <div className="input_con" style={{
-            position: 'absolute',
-            top: '20%',
-            left: '70%',
-            background: "#4ce7ae",
-            padding: '20px',
-            zIndex: 100
-        }}>
-            {/* 선택된 오브젝트의 이름을 보여주는 레이블과 방 이름 입력 필드 */}
-            <div>
-                <label style={{display: 'flex', justifyContent: 'center'}}>{objectDetails.roomName}</label>
-                <input
-                    className="roomName"
-                    type="text"
-                    value={objectDetails.roomName}
-                    onChange={handleRoomNameChange}
-                />
-            </div>
-            <br/>
-            <div style={{marginLeft: '10px'}}>
-                {/* 오브젝트의 정보를 입력받는 동적 필드들 */}
-                {objectDetails.info && objectDetails.info.map((item, index) => (
-                    <div key={index}>
-                        <input
-                            className="text_key"
-                            type="text"
-                            placeholder="항목"
-                            value={item.key}
-                            onChange={(e) => handleInfoInputChange(e, index, 'key')}
-                        />
-                        <input
-                            className="text_value"
-                            type="text"
-                            placeholder="값"
-                            value={item.value}
-                            onChange={(e) => handleInfoInputChange(e, index, 'value')}
-                        />
-                        <button className='btn btn-primary btn_remove'>
+        <Draggable
+            defaultPosition={{x: 70, y: 20}} // Set the default position
+            bounds="parent" // Restrict dragging to the parent element
+        >
+            <div className="input_con" style={{
+                position: 'absolute',
+                top: '20%',
+                left: '70%',
+                background: "rgba(106,36,3,0.89)",
+                padding: '20px',
+                zIndex: 100
+            }}>
+                {/* 선택된 오브젝트의 이름을 보여주는 레이블과 방 이름 입력 필드 */}
+                <div>
+                    <input
+                        className="text_room"
+                        type="text"
+                        value={objectDetails.roomName}
+                        onChange={handleRoomNameChange}
+                    />
+                </div>
+                <br/>
+
+                <div>
+                    {/* 오브젝트의 정보를 입력받는 동적 필드들 */}
+                    {objectDetails.info && objectDetails.info.map((item, index) => (
+                        <div key={index}>
+                            <input
+                                className="text_key"
+                                type="text"
+                                placeholder="항목"
+                                value={item.key}
+                                onChange={(e) => handleInfoInputChange(e, index, 'key')}
+                            />
+                            <input
+                                className="text_value"
+                                type="text"
+                                placeholder="값"
+                                value={item.value}
+                                onChange={(e) => handleInfoInputChange(e, index, 'value')}
+                            />
+                            <button className='btn btn-primary1 btn_remove' onClick={() => handleRemoveField(index)}>
+                                <FontAwesomeIcon icon={faTimes}/>
+                            </button>
+                        </div>
+                    ))}
+                    {/* 메타데이터 필드 추가 버튼 */}
+                    <button className='btn button-plus' onClick={addMetadataField}>
+                        항목 추가
+                    </button>
+                </div>
+
+                <br/>
+
+                <div>
+                    {/* 저장 및 취소 버튼 */}
+                    <div className="button-container">
+                        <button className="btn-primary" onClick={onSubmit} style={{marginRight: '10px'}}>
+                            저장
+                            <FontAwesomeIcon icon={faCheck}/>
+                        </button>
+                        <button className="btn-primary" onClick={onCancel}>
+                            취소
                             <FontAwesomeIcon icon={faTimes}/>
                         </button>
                     </div>
-                ))}
-                {/* 메타데이터 필드 추가 버튼 */}
-                <button className='btn btn-primary btn_plus' onClick={addMetadataField}>
-                    항목 추가
-                </button>
-            </div>
-            <br/>
-            <div>
-                {/* 저장 및 취소 버튼 */}
-                <div className="button-container">
-                    <button className="btn btn-primary btn-layer-1_1" onClick={onSubmit} style={{marginRight: '10px'}}>
-                        저장
-                        <FontAwesomeIcon icon={faCheck}/>
-                    </button>
-                    <button className="btn btn-primary btn-layer-3_1" onClick={onCancel}>
-                        취소
-                        <FontAwesomeIcon icon={faTimes}/>
-                    </button>
                 </div>
             </div>
-        </div>
+        </Draggable>
     );
 };
 
